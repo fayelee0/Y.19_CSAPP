@@ -1,0 +1,79 @@
+* Computer Systems: A Programmer's Perspective
+
+** Progress [0/12]
+
+*** TODO A Tour of Computer Systems
+    :PROPERTIES:
+    :CHAPTERS: 10
+    :END:
+
+
+*** TODO Representing and Manipulating Information
+    :PROPERTIES:
+    :CHAPTERS: 15
+    :END:
+
+
+*** TODO Machine-Level Representation of Programs
+    :PROPERTIES:
+    :CHAPTERS: 12
+    :END:
+
+
+*** TODO Processor Architecture
+    :PROPERTIES:
+    :CHAPTERS: 6
+    :END:
+
+
+*** TODO Optimizing Program Performance
+    :PROPERTIES:
+    :CHAPTERS: 15
+    :END:
+
+
+*** TODO The Memory Hierarchy
+    :PROPERTIES:
+    :CHAPTERS: 7
+    :END:
+
+
+*** TODO Linking
+    :PROPERTIES:
+    :CHAPTERS: 15
+    :END:
+
+
+*** TODO Exceptional Control Flow
+    :PROPERTIES:
+    :CHAPTERS: 8
+    :END:
+
+
+*** TODO Virtual Memory
+    :PROPERTIES:
+    :CHAPTERS: 12
+    :END:
+
+
+*** TODO System-Level I/O
+    :PROPERTIES:
+    :CHAPTERS: 12
+    :END:
+
+
+*** TODO Network Programming
+    :PROPERTIES:
+    :CHAPTERS: 7
+    :END:
+
+
+*** TODO Concurrent Programming
+    :PROPERTIES:
+    :CHAPTERS: 8
+    :END:
+
+
+** Notes
+
+*** A Tour of Computer Systems
