@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <limits.h>
 
 int main(void)
 {
@@ -17,11 +18,14 @@ int main(void)
         printf("-1 > -2 is %d\n", -1 > -2);
         printf("(unsigned) -1 > -2 is %d\n", (unsigned) -1 > -2);
 
+        // when unsigned and signed operator, use unsigned compute then convert to unsigned compare
         printf("-2147483647-1 == 2147483648U is %d\n", -2147483647-1 == 2147483648U);
         printf("-2147483647-1 < 2147483647 is %d\n", -2147483647-1 < 2147483647);
         printf("-2147483647-1U < 2147483647 is %d\n", -2147483647-1U < 2147483647);
         printf("-2147483647-1 < -2147483647 is %d\n", -2147483647-1 < -2147483647);
         printf("-2147483647-1U < -2147483647 is %d\n", -2147483647-1U < -2147483647);
+
+        printf("%d\n", 0x80000000 == INT_MIN);
 
         return 0;
 }

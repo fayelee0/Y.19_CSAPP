@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdint.h>
+#include <limits.h>
 
 int main(void)
 {
@@ -11,6 +13,9 @@ int main(void)
         double f1 = (3.14 + 1e20) - 1e20;
         double f2 = 3.14 + (1e20 - 1e20);
         printf("f1 = %g, f2 = %g\n", f1, f2);
+
+        int x = -2147483648;
+        printf("%d\n", x == INT_MIN);
 
         return 0;
 }
