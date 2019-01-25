@@ -2,6 +2,8 @@
 #include <stdint.h>
 #include <limits.h>
 
+#define KSIZE 1024
+
 int main(void)
 {
         int x0 = 200 * 300 * 400 * 500;
@@ -16,6 +18,8 @@ int main(void)
 
         int x = -2147483648;
         printf("%d\n", x == INT_MIN);
+        printf("%d\n", x);
+        printf("%d\n", KSIZE < INT_MIN);
 
         return 0;
 }
