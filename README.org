@@ -13,7 +13,7 @@
 
 *** TODO 1. Representing and Manipulating Information
     :PROPERTIES:
-    :CHAPTERS: 15
+    :CHAPTERS: 5
     :END:
 
 
@@ -338,12 +338,12 @@
       
 ****** 无符号数加法 
 
-       检测无符号数加法中的溢出
+       _检测无符号数加法中的溢出_
        对在范围 0 <= x, y <= Umax 中的 x 和 y，令 s = x + y。
        则对计算 s，当且仅当 s < x（或等价的 s < y）时，发生了溢出。
 
        
-       无符号数求反
+       _无符号数求反_
        对满足 0 <= x < 2^w 的任意 x，其 w 位的无符号逆元 -x 由下式给出
        -x = x (x = 0) || 2^w - x (x > 0)
        
@@ -353,7 +353,10 @@
        0 <= X, Y < 2^w
 
        X + Y = | X + Y,        X + Y < 2^w             // normal
-               | X + Y - 2^w,  2^w <= X + Y < 2^(w+1)  // overlfow
+               | X + Y - 2^w,  2^w <= X + Y < 2^(w+1)  // overflow
+
+               
+       X + Y = result = result mod 2^w                 // overflow ignore
 
        #+END_EXAMPLE
 
