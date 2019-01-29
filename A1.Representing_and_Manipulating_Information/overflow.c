@@ -21,5 +21,9 @@ int main(void)
         printf("%d\n", x);
         printf("%d\n", KSIZE < INT_MIN);
 
+        double d = 1e10;
+        int dx = (int) d;
+        printf("dx is %d\n", dx);
+
         return 0;
 }

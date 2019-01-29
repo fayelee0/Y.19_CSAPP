@@ -3,15 +3,15 @@
 
 * Computer Systems: A Programmer's Perspective
 
-** A. Progress [0/12]
+** A. Progress [2/12]
 
-*** TODO 0. A Tour of Computer Systems
+*** DONE 0. A Tour of Computer Systems
     :PROPERTIES:
     :CHAPTERS: 10
     :END:
 
 
-*** TODO 1. Representing and Manipulating Information
+*** DONE 1. Representing and Manipulating Information
     :PROPERTIES:
     :CHAPTERS: 5
     :END:
@@ -75,6 +75,7 @@
     :PROPERTIES:
     :CHAPTERS: 8
     :END:
+
 
 
 ** B. Notes
@@ -406,6 +407,122 @@
        x * y = U2T((x * y) mod 2^w)
 
 
+****** 乘以常数
+
+       乘以 2 的幂就是左移 k 位
+
+       #+BEGIN_SRC C
+
+       int x = 0xB;  // x = 11;
+       x << 2        // x * 4 = x * 2^2 = x << 2
+
+       int y = 0xB;  // y = 11;
+       // y * 14
+       //
+       // y * (8 + 4 + 2)
+       // y * 8 + y * 4 + y * 2
+       // y << 3 + y << 2 + y << 1
+       y << 3 + y << 2 + y << 1
+
+       int z = 0xB;
+       // z * 14
+       // 
+       // z * (16 - 2)
+       // z * 16 - z * 2
+       // z << 4 - z << 1
+
+       #+END_SRC
+
+
+****** 除以常数
+
+       除以 2 的幂就是右移 k 位，其中无符号数使用逻辑右移，补码使用算术右移
+
+       #+BEGIN_EXAMPLE
+
+       1. unsigned divide
+
+         x divide 2^k equal x >> k, equal floor(x / 2^k)
+
+       2. signed divide
+
+       if x >= 0 then
+
+         x divide 2^k equal x >> k, equal floor(x / 2^k)
+       
+       else
+       
+         // must add biasing, otherwise result is ceiling(x / 2^k)
+         x divide 2^k equal (x + [1<<k] - 1) >> k, equal floor(x / 2^k)
+
+       end
+
+       #+END_EXAMPLE
+
+
 **** 浮点数
+
+     E in [00....01 ~ 11....10]
+     e = unsigned, E = e - Bias = e - (2^(k-1) - 1)
+
+     E in [00....00]
+     e = 0, E = 1 - (2^(k-1) - 1) = -2^(k-1)
+
+     E in [11....11]
+     if frac == 0 then s = 0 is +infinity, s = 1 is -infinity
+     if frac != 0 then NaN
+
+
+***** IEEE 浮点数表示
+
+      #+BEGIN_EXAMPLE
+
+      | S | E             | M                            | Desc        |
+      |---|---------------|------------------------------|-------------|
+      | s | != 0 & != 255 |                              | Normal      |
+      | s | 00000000      |                              | Denomalized |
+      | s | 11111111      | 0000 0000 0000 0000 0000 000 | Infinity    |
+      | s | 11111111      | !=0                          | NaN         |
+
+      float : S 1bit; E  8bit; M 23bit
+      double: S 1bit; E 11bit; M 52bit
+
+      #+END_EXAMPLE
+
+      V = (-1)^s * M * 2^E
+
+****** sign
+
+       if s = 1 V is negative; s = 0 V is positive
+       
+****** significand
+
+       M is a fractional binary number that ranges is [1, 2)
+
+       frac range is [0, 1), binary representation is 0.fn ... f1 f0
+
+       M = 1 + frac, binary representation is 1.fn ... f1 f0
+
+****** exponent
+
+       E weights the value by a power of 2
+
+       _if e is 0x00 or 000 0000 0000, E = 1 - Bias, M = f_
+
+       1. float
+          
+          e is unsigned, range is [0x01, 0x0x7F] = [1, 254]
+          Bias is 2^(k-1) - 1 = 2^(8-1)-1 = 127
+
+          E = e - Bias is signed, range is [-126, 127]
+
+       2. double
+
+          e is unsigned, range is [000 0000 0001, 111 1111 1110] = [1, 2046]
+          Bias is 2^(k-1) - 1 = 2^(11-1)-1=1023
+
+          E = e - Bias is signed, range is [-1022, 1023]
+
+
 
      
