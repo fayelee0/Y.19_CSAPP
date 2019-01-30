@@ -16,7 +16,7 @@ int main(void)
 
 int is_little_endian()
 {
-        int i = 1;
+        int i = 0xFF;
 
-        return (&i)[0] & 0xF;
+        return ((&i)[0] == 0xFF) ? 1 : 0;
 }
