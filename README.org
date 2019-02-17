@@ -1,19 +1,20 @@
 #+AUTHOR: Fei Li <wizard@pursuetao.com>
 #+STARTUP: logdone
+#+STARTUP: latexpreview
+
 * Computer Systems: A Programmer's Perspective
 
-** A. Progress [1/12]
+** A. Progress [2/12]
 
 *** DONE 0. A Tour of Computer Systems
-    CLOSED: [2019-01-15 Tue 20:43]
     :PROPERTIES:
     :CHAPTERS: 10
     :END:
 
 
-*** TODO 1. Representing and Manipulating Information
+*** DONE 1. Representing and Manipulating Information
     :PROPERTIES:
-    :CHAPTERS: 15
+    :CHAPTERS: 5
     :END:
 
 
@@ -75,6 +76,7 @@
     :PROPERTIES:
     :CHAPTERS: 8
     :END:
+
 
 
 ** B. Notes
@@ -243,3 +245,447 @@
 ***** Instruction-Level Parallelism | 指令级并行
 
 ***** Single-Instruction, Multiple-Data (SIMD) Parallelism | 单指令多数据并行
+
+
+*** 2. Representing and Manipulating Information
+
+**** 三种最重要的数字表示
+
+    计算机的表示法是用有限数量的位来对一个数字编码，因此，当结果太大以至于不能
+    表示时，某些运算就会溢出（overflow）。
+
+    计算机可能没有产生期望的结果，但是至少它是一致的！
+
+    #+BEGIN_SRC C
+    int x0 = 200 * 300 * 400 * 500;      // x0 = -884901888
+    int x1 = 300 * (200 * (400 * 500));  // x1 = -884901888
+    int x2 = (300 * 500) * (200 * 400);  // x2 = -884901888
+    #+END_SRC
+
+    浮点运算有完全不同的数学属性，虽然溢出会产生特殊的值 +∞，但是一组正数的乘积
+    总是正的。由于表示的精读有限，浮点运算是不可结合的。
+
+    #+BEGIN_SRC C
+    double f1 = (3.14 + 1e20) - 1e20);    // f1 = 0
+    double f2 = 3.14 + (1e20 - 1e20);     // f2 = 3.14
+    #+END_SRC
+
+
+    |-------+-------------+--------+-------------+----------------------|
+    | Value |           8 |     16 |          32 |                   64 |
+    |-------+-------------+--------+-------------+----------------------|
+    | Umax  |        0xFF | 0xFFFF |  0xFFFFFFFF |   0xFFFFFFFFFFFFFFFF |
+    |       |         255 |  65535 |  4294967295 | 18446744073709551615 |
+    |-------+-------------+--------+-------------+----------------------|
+    | Tmin  |        0x80 | 0x8000 |  0x80000000 |   0x8000000000000000 |
+    |       |        -128 | -32768 | -2147483648 | -9223372036854775808 |
+    |-------+-------------+--------+-------------+----------------------|
+    | Tmax  |        0x7F | 0x7FFF |  0x7FFFFFFF |   0x7FFFFFFFFFFFFFFF |
+    |       |         127 |  32767 |  2147483647 |  9223372036854775807 |
+    |-------+-------------+--------+-------------+----------------------|
+    | -1    |        0xFF | 0xFFFF |  0xFFFFFFFF |   0xFFFFFFFFFFFFFFFF |
+    | 0     |        0x00 | 0x0000 |  0x00000000 |   0x0000000000000000 |
+    |-------+-------------+--------+-------------+----------------------|
+
+
+***** 无符号编码 | unsigned
+
+      无符号编码基于传统的二进制表示法，表示大于或者等于零的数字。
+
+
+***** 补码编码 | two's complement
+
+      补码编码是表示有符号整数的最常见的方式，有符号整数就是可以为正或者为负的数字。
+
+
+***** 浮点数编码 | floating-point
+
+      浮点数编码是表示实数的科学记数法的以 2 为基数的版本。
+
+
+
+**** 信息存储
+
+     大多数计算机使用 8 位的块，或者字节（byte），作为最小的可寻址的内存单位，
+     而不是访问内存中单独的位。机器级程序将内存视为一个非常大的字节数组，称为
+     虚拟内存（virtual memory）。
+
+     内存的每个字节都由一个唯一的数字来标识，称为它的地址（address），所有可能
+     地址的集合就称为*虚拟地址空间（virtual address space）*。这个虚拟地址
+     空间只是一个展现给机器级程序的概念性映像。实际的实现是将动态随机访问存储器
+     （DRAM）、闪存、磁盘存储器、特殊硬件和操作系统软件结合起来，为程序提供一个
+     看上去统一的字节数组。
+
+     每台计算机都有一个字长（word size），指名指针数据的标称大小（nominal 
+     size）。因为虚拟地址是以这样的一个字来编码的，所以字长决定的最重要的系统参
+     数就是虚拟地址空间的最大大小。亦对于一个字长为*w位*的机器而言，虚拟地址的范
+     围为 0 ~ 2^w - 1，程序最多访问 2^w 个字节。
+
+     程序员应该力图使他们的程序在不同的机器和编译器上可移植。可移植性的一个方面就
+     是使程序对不同数据类型的确切大小不敏感。使用确定大小的整数类型是程序员准确控
+     制数据表示的最佳途径。
+
+     #+BEGIN_SRC C
+     #include <stdint.h>
+
+     int32_t x = 1;
+     uint32_t y = 2;
+     #+END_SRC
+
+     指令编码是不同的，不同的机器类型使用不同的且不兼容的指令和编码方式。即使是
+     完全一样的进程，运行在不同的操作系统上也会有不同的编码规则，因此二进制代码
+     是不兼容的。二进制代码很少能在不同机器和操作系统组合之间移植。
+
+     计算机系统的一个*基本概念*就是，从机器的角度来看，程序仅仅只是字节序列。
+     机器没有关于原始源程序的任何信息，除了可能有些用来帮助调试的辅助表意外。
+
+
+
+**** 寻址和字节序列
+
+     对于跨多字节的程序对象，需要建立两条规则：这个对象的地址是多少，在内存中如
+     何排列这些字节。在几乎所有的机器上，多字节对象都被存储为连续的字节序列，对
+     象的地址为所使用字节中最小的地址。
+
+***** 大端法 | Big Endian
+
+      在内存中按照从最高有效字节到最低有效字节的顺序存储，亦书写顺序
+
+      _大端表示法按照书写顺序，但是按照内存地址来看是反的_
+
+      #+BEGIN_EXAMPLE
+      0x01234567
+
+      内存：----| 01 | 23 | 45 | 67 |---
+      地址：0x    10   11   12   13
+      #+END_EXAMPLE
+
+
+***** 小端法 | Little Endian
+
+      在内存中按照从最低有效字节到最高有效字节的顺序存储，亦反书写顺序
+
+      _小端表示法按照反书写顺序，但是按照内存地址来看是正的_
+
+      #+BEGIN_EXAMPLE
+      0x01234567
+      
+      内存：----| 67 | 45 | 23 | 01 |----
+      地址：0x    10   11   12   13
+      #+END_EXAMPLE
+
+
+
+**** 整数
+
+     有符号数到无符号数的隐式转换，会导致错误或者漏洞的方式。
+     避免这类错误的一种方法就是绝不是用无符号数。
+
+***** 移位运算
+
+****** 逻辑左移 <<
+
+       向左移动，丢弃最高位，并在右端补 0
+
+****** 逻辑右移 >>
+
+       向右移动，丢弃最低位，并在左端补 0
+
+****** 算术右移 >>>
+
+       向右移动，丢弃最低位，并在左端补 符号位
+     
+
+
+
+***** 整数的表示
+
+      C 语言支持所有整型数据类型的有符号与无符号运算。尽管 C 语言标准没有指定符号数
+      要采用某种表示，但是几乎所有的机器都是用补码。通常，大多数数字都默认是有符号的。
+
+      #+BEGIN_EXAMPLE
+
+      12345           => signed
+      0x1A2B          => signed
+
+      12345U          => unsigned
+      0x1A2BU         => unsigned
+
+      #+END_EXAMPLE
+
+      从一个数据大小到另一个数据大小的转换，以及无符号合有符号数字之间的转换的相对顺序
+      能够影响一个程序的行为。
+
+      #+BEGIN_SRC C
+
+      short sx = -12345;
+      unsigned uy = sx;
+
+      // in C use convert: (unsigned) (int) sx;
+      // not use         : (unsigned) (unsigned short) sx;
+      
+      #+END_SRC
+
+      
+****** 无符号数编码 
+
+       将数字 x 看做一个二进制表示的数，就获得了 x 的无符号表示。
+
+       _无符号数编码的唯一性，每个介于 ~0~2^w-1~ 之前的数都有唯一一个 w 位的值编码_
+
+
+****** 补码编码 | two's complement
+       
+       在补码定义中，就最高有效位解释为负权（negative weight）。
+
+       _补码编码的唯一性，忙嗯介于 ~-2^(w-1)~2^(w-1)-1~ 之间的数都有唯一一个 w 位的值编码_
+
+       #+BEGIN_SRC
+       
+       | TMin | = | TMax | + 1
+
+       UMax = 2TMax + 1
+
+       T2U = B2U(T2B)
+       U2T = B2T(U2B)
+
+       1 + UMax = 2^w
+
+       T2U = x + 2^w, x <  0
+           = x      , x >= 0
+
+
+       U2T = u      , u <= TMax
+           = u - 2^w, u >  TMax
+
+       #+END_SRC
+
+
+****** 有符号与无符号类型之间的转换
+
+       对于大多数 C 预言的实现来说：
+       1. 有符号数和无符号数之间相互转换是从*位级*角度来看的，而不是数的角度
+       2. 处理同样字长的有符号数和无符号数之间相互转换的一般规则是*数值可能会变，但是位模式不变*
+
+          
+       _不要将有符号数与无符号数在一起操作，会出现奇怪的现象_
+
+       #+BEGIN_SRC C
+       
+       short int v = -12345;                          // 0xCFC7
+       unsigned short uv = (unsigned short) v;        // 0xCFC7
+
+       unsigned u = 4294967295u;                      // 0xFFFFFFFF
+       int tu = (int) u;                              // 0xFFFFFFFF
+
+       #+END_SRC
+       
+
+****** 扩展一个数的位表示
+
+       1. 无符号数的零扩展，在数的位表示前面添加 *0*
+       2. 补码数值的符号扩展，符号扩展相当于数值未变化
+
+
+****** 截断一个数的位表示
+
+       1. 截断无符号数就是丢弃 k 个高位，等价与 x mod 2^k
+       2. 截断有符号数就是丢弃 k 个高位，且将最高位转换为符号位
+
+
+***** 整数运算
+
+      [0, Tmax] => U = T
+
+      T2U(-1) = -1 + 2^w = Umax => 最靠近 0 的负数映射为最大的无符号数
+
+      T2U(Tmin) = -2^(w-1) + 2^w = 2^(w-1) = Tmax + 1 => 最小的负数映射为一个刚好在补码的正数范围之外的无符号数
+      
+****** 无符号数加法 
+
+       _检测无符号数加法中的溢出_
+       对在范围 0 <= x, y <= Umax 中的 x 和 y，令 s = x + y。
+       则对计算 s，当且仅当 s < x（或等价的 s < y）时，发生了溢出。
+
+       
+       _无符号数求反_
+       对满足 0 <= x < 2^w 的任意 x，其 w 位的无符号逆元 -x 由下式给出
+       -x = x (x = 0) || 2^w - x (x > 0)
+       
+
+       #+BEGIN_EXAMPLE
+       
+       0 <= X, Y < 2^w
+
+       X + Y = | X + Y,        X + Y < 2^w             // normal
+               | X + Y - 2^w,  2^w <= X + Y < 2^(w+1)  // overflow
+
+               
+       X + Y = result = result mod 2^w                 // overflow ignore
+
+       #+END_EXAMPLE
+
+
+****** 补码加法
+
+       _计算机计算补码加法_
+       x + y = U2T(T2U(x) + T2U(y))
+
+       _检测补码加法中的溢出_
+       对满足 Tmin <= x, y <= Tmax 的 x 和 y，令 s = x + y。
+       当且仅当 x > 0, y > 0，但 s <= 0 时，计算 s 发生了正溢出。
+       当且仅当 x < 0, y < 0，但 s >= 0 时，计算 s 发生了负溢出。  
+
+       _补码的非_
+       对满足 Tmin <= x <= Tmax 的 x，其补码的非 -x 由下式给出
+       -x = Tmin (x = Tmin) || -x (x > Tmin)
+       
+       #+BEGIN_SRC C
+       
+       计算一个位级表示的值得补码的两种方法
+       1. 对每一位求补，对结果 +1
+       2. k 是最有边的 1 的位置，对位 k 左边的所有位取反
+
+       #+END_SRC
+
+       #+BEGIN_EXAMPLE
+
+       对满足 -2^(w-1) <= X, Y <= 2^(w-1) - 1 的整数 X 和 Y，有：
+
+       X + Y = | X + Y - 2^w, 2^(w-1) <= X + Y             ; positive overflow
+               | X + Y      , -2^(w-1) <= X + Y < 2^(w-1)  ; normal 
+               | X + Y + 2^w, X + Y < -2^(w-1)             ; negative overflow
+       
+       #+END_EXAMPLE
+
+
+****** 无符号乘法
+
+       对满足 0 <= x, y <= Umax 的 x 和 y 有：
+       x * y = (x * y) mod 2^w
+
+
+****** 补码乘法
+       
+       对满足 Tmin <= x, y <= Tmax 的 x 和 y 有：
+       x * y = U2T((x * y) mod 2^w)
+
+
+****** 乘以常数
+
+       乘以 2 的幂就是左移 k 位
+
+       #+BEGIN_SRC C
+
+       int x = 0xB;  // x = 11;
+       x << 2        // x * 4 = x * 2^2 = x << 2
+
+       int y = 0xB;  // y = 11;
+       // y * 14
+       //
+       // y * (8 + 4 + 2)
+       // y * 8 + y * 4 + y * 2
+       // y << 3 + y << 2 + y << 1
+       y << 3 + y << 2 + y << 1
+
+       int z = 0xB;
+       // z * 14
+       // 
+       // z * (16 - 2)
+       // z * 16 - z * 2
+       // z << 4 - z << 1
+
+       #+END_SRC
+
+
+****** 除以常数
+
+       除以 2 的幂就是右移 k 位，其中无符号数使用逻辑右移，补码使用算术右移
+
+       #+BEGIN_EXAMPLE
+
+       1. unsigned divide
+
+         x divide 2^k equal x >> k, equal floor(x / 2^k)
+
+       2. signed divide
+
+       if x >= 0 then
+
+         x divide 2^k equal x >> k, equal floor(x / 2^k)
+       
+       else
+       
+         // must add biasing, otherwise result is ceiling(x / 2^k)
+         x divide 2^k equal (x + [1<<k] - 1) >> k, equal floor(x / 2^k)
+
+       end
+
+       #+END_EXAMPLE
+
+
+**** 浮点数
+
+     E in [00....01 ~ 11....10]
+     e = unsigned, E = e - Bias = e - (2^(k-1) - 1)
+
+     E in [00....00]
+     e = 0, E = 1 - (2^(k-1) - 1) = -2^(k-1)
+
+     E in [11....11]
+     if frac == 0 then s = 0 is +infinity, s = 1 is -infinity
+     if frac != 0 then NaN
+
+
+***** IEEE 浮点数表示
+
+      #+BEGIN_EXAMPLE
+
+      | S | E             | M                            | Desc        |
+      |---|---------------|------------------------------|-------------|
+      | s | != 0 & != 255 |                              | Normal      |
+      | s | 00000000      |                              | Denomalized |
+      | s | 11111111      | 0000 0000 0000 0000 0000 000 | Infinity    |
+      | s | 11111111      | !=0                          | NaN         |
+
+      float : S 1bit; E  8bit; M 23bit
+      double: S 1bit; E 11bit; M 52bit
+
+      #+END_EXAMPLE
+
+      V = (-1)^s * M * 2^E
+
+****** sign
+
+       if s = 1 V is negative; s = 0 V is positive
+       
+****** significand
+
+       M is a fractional binary number that ranges is [1, 2)
+
+       frac range is [0, 1), binary representation is 0.fn ... f1 f0
+
+       M = 1 + frac, binary representation is 1.fn ... f1 f0
+
+****** exponent
+
+       E weights the value by a power of 2
+
+       _if e is 0x00 or 000 0000 0000, E = 1 - Bias, M = f_
+
+       1. float
+          
+          e is unsigned, range is [0x01, 0x0x7F] = [1, 254]
+          Bias is 2^(k-1) - 1 = 2^(8-1)-1 = 127
+
+          E = e - Bias is signed, range is [-126, 127]
+
+       2. double
+
+          e is unsigned, range is [000 0000 0001, 111 1111 1110] = [1, 2046]
+          Bias is 2^(k-1) - 1 = 2^(11-1)-1=1023
+
+          E = e - Bias is signed, range is [-1022, 1023]
+
+
+
