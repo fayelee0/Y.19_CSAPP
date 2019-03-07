@@ -1,0 +1,49 @@
+#+TITLE: Practice 29
+
+#+BEGIN_SRC c
+
+long sum = 0;
+for (long i = 0; i < 10; i++) {
+    if (i & 1) {
+        continue;
+    }
+    sum += i;
+}
+
+#+END_SRC
+
+
+#+BEGIN_SRC c
+
+long sum = 0;
+long i = 0;
+
+while (i < 10) {
+    if (i & 1) {
+        continue;      // infinite loop
+    }
+
+    sum += i;
+    i++;
+}
+
+#+END_SRC
+
+
+#+BEGIN_SRC c
+
+long sum = 0;
+long i = 0;
+
+while (i < 10) {
+    if (i & 1) {
+        goto update;
+    }
+
+    sum += i;
+
+    update:
+        i++;
+}
+
+#+END_SRC

@@ -1,0 +1,22 @@
+#+TITLE: Practice 14
+
+#+BEGIN_SRC c
+
+int test(data_t a)
+{
+    return a TEST 0;
+}
+
+#+END_SRC
+
+| testq %rdi, %rdi | typedef long data_t                                  |
+| setge %al        | a >= 0                                               |
+|------------------+------------------------------------------------------|
+| testw %di, %di   | typedef short data_t; typedef unsigned short data_t; |
+| sete %al         | a == 0                                               |
+|------------------+------------------------------------------------------|
+| testb %dil, %dil | typedef unsigned char data_t;                        |
+| seta %al         | a > 0                                                |
+|------------------+------------------------------------------------------|
+| testl %edi, %edi | typedef int data_t; typedef unsigned data_t;         |
+| setne            | a != 0                                               |

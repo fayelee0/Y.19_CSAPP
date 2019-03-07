@@ -1,0 +1,23 @@
+#+TITLE: Practice 13
+
+#+BEGIN_SRC c
+
+int comp(data_t a, data_t b)
+{
+    return a COMP b
+}
+
+#+END_SRC
+
+
+| cmpl %esi, %edi | typedef int data_t                                                     |
+| setl %al        | a < b                                                                  |
+|-----------------+------------------------------------------------------------------------|
+| cmpw %si, %di   | typedef short data_t                                                   |
+| setge %al       | a >= b                                                                 |
+|-----------------+------------------------------------------------------------------------|
+| cmpb %sil, %dil | typedef unsigned char data_t                                           |
+| setbe %al       | a <= b                                                                 |
+|-----------------+------------------------------------------------------------------------|
+| cmpq %rsi, %rdi | typedef long data_t; typedef unsigned long data_t; typedef ptr data_t; |
+| setne %al       | a != b                                                                 |

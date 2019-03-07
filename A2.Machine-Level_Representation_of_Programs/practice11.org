@@ -1,0 +1,19 @@
+#+TITLE: Practice 11
+
+#+BEGIN_SRC asm
+
+xorq %rdx, %rdx
+
+#+END_SRC
+
+# A
+
+x = 0;
+
+# B
+
+movq $0, %rdx
+
+# C
+
+

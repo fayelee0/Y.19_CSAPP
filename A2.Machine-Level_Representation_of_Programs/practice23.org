@@ -1,0 +1,41 @@
+#+TITLE: Practice 23
+
+#+BEGIN_SRC c
+
+long dw_loop(long x)
+{
+    long y = x * x;
+    long *p = &x;
+    long n = 2 * x;
+    do {
+        x += y;
+        (*p)++;
+        n--;
+    } while (n > 0);
+    retutn x;
+}
+
+#+END_SRC
+
+
+#+BEGIN_SRC asm
+
+.long dw_loop(long x)
+.x in %rdi
+dw_loop:
+  movq   %rdi, %rax               ; %rax = x
+  movq   %rdi, %rcx               ; %rcx = x
+  imulq  %rdi, %rcx               ; y = x * x
+  leaq   (%rdi, %rdi), %rdx       ; n = 2 * x
+.L2:
+  leaq   1(%rcx,%rax), %rax       ; x += y; (*p)++
+  subq   $1, %rdx                 ; n--
+  testq  %rdx, %rdx               ; test (n > 0)
+  jg     .L2                      ; goto .L2
+  rep; ret
+
+#+END_SRC
+
+A. x in %rdi, y in %rcx, n in %rdx
+B. (*p) value is x and x in %rdi, %rax
+

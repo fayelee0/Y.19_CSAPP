@@ -1,0 +1,24 @@
+#+TITLE: Practice 07
+
+#+BEGIN_SRC c
+
+long scale2(long x, long y, long z) 
+{
+    long t = 5x + 2y + 8z;
+    return t;
+}
+
+#+END_SRC
+
+
+#+BEGIN_SRC asm
+
+. long scale2(long x, long y, long z)
+. x in %rdi, y in %rsi, z in %rdx
+scale2:
+  leaq (%rdi,%rdi,4), %rax
+  leaq (%rax,%rsi,2), %rax
+  leqa (%rax,%rdx,8), %rax
+  ret
+
+#+END_SRC

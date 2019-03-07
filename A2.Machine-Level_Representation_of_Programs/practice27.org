@@ -1,0 +1,62 @@
+#+TITLE: Practice 27
+
+#+BEGIN_SRC c
+
+long fact_for(long n)
+{
+    long result = 1;
+    for (long i = 2; i <= n; i++) {
+        result *= i;
+        i++;
+    }
+    return result;
+}
+
+#+END_SRC
+
+
+#+BEGIN_SRC c
+
+long fact_for_while(long n)
+{
+    long i = 2;
+    long result = 1;
+    while (i <= n) {
+        result *= i;
+        i++;
+    }
+    return result;
+}
+
+#+END_SRC
+
+
+#+BEGIN_SRC c
+
+long fact_for_while_goto(long n)
+{
+    long i = 2;
+    long result = 1;
+    if (n <= 1) {         // i > n
+        goto done;
+    }
+
+loop:
+    result *= i;
+    i++;
+    if (i <= n) {
+        goto loop;
+    }
+
+done:
+    return result;
+}
+
+#+END_SRC
+
+
+#+BEGIN_SRC asm
+
+
+
+#+END_SRC

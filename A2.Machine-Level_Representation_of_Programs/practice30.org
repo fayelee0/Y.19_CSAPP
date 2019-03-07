@@ -1,0 +1,45 @@
+#+TITLE: Practice 30
+
+#+BEGIN_SRC c
+
+void switch2(long x, long* dest)
+{
+    long val = 0;
+    switch (x) {
+        // body of switch statement omitted
+    }
+    *dest = val;
+}
+
+#+END_SRC
+
+
+#+BEGIN_SRC asm
+
+.void switch2(long x, long* dest)
+.x in %rdi
+switch2:
+  addq   $1, %rdi
+  cmpq   $8, %rdi
+  ja     .L2
+  jmp    *.L4(,%rdi,8)
+
+; x + 1 > 8
+; ja .L2 is default
+
+.L4:
+  .quad  .L9        ; 0 -> -1 
+  .quad  .L5        ; 1 ->  0    +
+  .quad  .L6        ; 2 ->  1
+  .quad  .L7        ; 3 ->  2    -
+  .quad  .L2        ; default
+  .quad  .L7        ; 5 ->  4    -
+  .quad  .L8        ; 6 ->  5
+  .quad  .L2        ; default
+  .quad  .L5        ; 8 ->  7    +
+
+#+END_SRC
+
+
+A. case -1, 0, 1, 2, 4, 5, 7
+B. .L7 <2, 4>; .L5 <0, 7>

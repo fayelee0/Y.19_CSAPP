@@ -1,0 +1,37 @@
+#+TITLE: Practice 05
+
+#+BEGIN_SRC c
+
+void decode1(long* x, long* y, long* z)
+
+#+END_SRC
+
+#+BEGIN_SRC asm
+
+. void decode1(long* x, long* y, long* z)
+. x in %rdi, y in %rsi, z in %rdx
+decode1:
+  movq (%rdi), %r8
+  movq (%rsi), %rcx
+  movq (%rdx), %rax
+  movq %r8, (%rsi)
+  movq %rcx, (%rdx)
+  movq %rax, (%rdi)
+  ret
+
+#+END_SRC
+
+#+BEGIN_SRC c
+
+void decode1(long* x, long* y, long* z)
+{
+    long xv = *x;
+    long yv = *y;
+    long zv = *z;
+
+    *y = xv;
+    *z = yv;
+    *x = zv;
+}
+
+#+END_SRC

@@ -1,0 +1,26 @@
+#+TITLE: Practice 09
+
+#+BEGIN_SRC c
+
+long shift_left4_rightn(long x, long n)
+{
+    x <<= 4;
+    x >= n;
+    return x;
+}
+
+#+END_SRC
+
+#+BEGIN_SRC asm
+
+. long shift_left4_rightn(long x, long n)
+. x in %rdi, n in %rsi
+shift_left4_rightn:
+  movq %rdi, %rax   . get x
+  salq $4, %rax     . x <<= 4
+  movl %esi, %ecx   . get n
+  sarq %cl, %rax    . x >= n
+  ret
+
+#+END_SRC
+

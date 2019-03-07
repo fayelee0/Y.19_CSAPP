@@ -1,0 +1,26 @@
+#+TITLE: Practice 03
+
+#+BEGIN_SRC asm
+
+.0x0F (%ebx) both memory locations
+movb 0x0F, (%ebx)
+
+.movl double word != %rax quad word
+movl %rax, (%rsp)
+
+.(%rax) 4(%rsp) both memory locations
+movw (%rax), 4(%rsp)
+
+.%sl not exist
+movb %al, %sl
+
+.$0x123 is immediate
+movq %rax, $0x123
+
+.movl double word != %rdx quad word
+movl %eax, %rdx
+
+.%si not exist
+movb %si, 8(%rbp)
+
+#+END_SRC

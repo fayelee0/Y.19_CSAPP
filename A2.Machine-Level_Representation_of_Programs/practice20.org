@@ -1,0 +1,25 @@
+#+TITLE: Practice 20
+
+#+BEGIN_SRC c
+
+#define OP
+
+long arith(long x)
+{
+    return x OP 8;
+}
+
+#+END_SRC
+
+#+BEGIN_SRC asm
+
+.long arith(long x)
+.x in %rdi
+arith:
+  leaq   7(%rdi), %rax         t = 7 + x
+  testq  %rdi, %rdi            x == 0
+  cmovns %rdi, %rax            if x < 0, t = x
+  sarq   $3, %rax              x >> 3
+  ret
+
+#+END_SRC
