@@ -1,0 +1,40 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Computer System: A Programmer's Perspctive 
+
+** Pregressing [0/12]
+
+*** TODO 计算机系统漫游
+
+
+*** TODO 信息的表示和处理
+
+
+*** TODO 程序的机器级表示
+
+
+*** TODO 处理器体系结构
+
+
+*** TODO 优化程序性能
+
+
+*** TODO 存储器层次结构
+
+
+*** TODO 链接
+
+
+*** TODO 异常控制流
+
+
+*** TODO 虚拟内存
+
+
+*** TODO 系统级 I/O
+
+
+*** TODO 网络编程
+
+
+*** TODO 并发编程
