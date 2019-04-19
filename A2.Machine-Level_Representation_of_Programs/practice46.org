@@ -1,0 +1,28 @@
+#+TITLE: Practice 46
+
+#+BEGIN_SRC c
+
+/* 
+ * This is very low-quality code. 
+ * It is intended to illustrate bad programming practices.
+ *
+ */
+char* get_line()
+{
+    char buf[4];
+    char* result;
+    gets(buf);
+    result = malloc(strlen(buf));
+    strcpy(result, buf);
+    return result;
+}
+
+#+END_SRC
+
+
+#+BEGIN_SRC asm
+
+.char* get_line()
+
+
+#+END_SRC

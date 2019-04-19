@@ -1,0 +1,21 @@
+#+TITLE: Practice 36
+
+#+BEGIN_SRC c
+
+short S[7];
+short* T[3];
+short** U[6];
+int V[8];
+double* W[4];
+
+#+END_SRC
+
+
+
+| Array | Element size | Total size | Start address | Element i   |
+|-------+--------------+------------+---------------+-------------|
+| S     |            2 |         14 | X_s           | X_s + 2 * i |
+| T     |            8 |         24 | X_t           | X_t + 8 * i |
+| U     |            8 |         48 | X_u           | X_u + 8 * i |
+| V     |            4 |         32 | X_v           | X_v + 4 * i |
+| W     |            8 |         32 | X_w           | X_w + 8 * i |

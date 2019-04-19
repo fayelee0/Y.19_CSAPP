@@ -1,0 +1,36 @@
+#+TITLE: Practice 35
+
+#+BEGIN_SRC c
+
+long rfun(unsigned long x)
+{
+    if (x == 0) {
+        return 0;
+    }
+
+    unsigned long nx = x >> 2;
+    long rv = rfun(nx);
+    return x + rv;
+}
+
+#+END_SRC
+
+
+#+BEGIN_SRC asm
+
+.long rfun(unsigned long x)
+.x in %rdi
+rfun:
+  pushq   %rbx
+  movq    %rdi, %rbx         ; x
+  movl    $0, %eax
+  testq   %rdi, %rdi
+  je      .L2
+  shrq    $2, %rdi
+  call    rfun
+  addq    %rbx, %rax
+.L2:
+  popq    %rbx
+  ret
+
+#+END_SRC

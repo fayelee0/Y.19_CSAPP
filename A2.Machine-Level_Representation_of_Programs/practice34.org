@@ -1,0 +1,32 @@
+#+TITLE: Practice 34
+
+#+BEGIN_SRC asm
+
+.long P(long x)
+.x in %rdi
+P: 
+  pushq  %r15                 
+  pushq  %r14                 
+  pushq  %r13                 
+  pushq  %r12                 
+  pushq  %rbp                 
+  pushq  %rbx                 
+  subq   $24, %rsp            
+  movq   %rdi, %rbx           ; r
+  leaq   1(%rdi), %r15        ; r
+  leaq   2(%rdi), %r14        ; r
+  leaq   3(%rdi), %r13        ; r
+  leaq   4(%rdi), %r12        ; r
+  leaq   5(%rdi), %rbp        ; r
+  leaq   6(%rdi), %rax        
+  movq   %rax, (%rsp)         ; s
+  leaq   7(%rdi), %rdx        
+  movq   %rdx, 8(%rsp)        ; s
+  movl   $0, %eax             
+  call   Q
+
+#+END_SRC
+
+%rbx, %r15, %r14, %r13, %r12, %rbp in register
+
+(%rsp), 8(%rsp) in stack

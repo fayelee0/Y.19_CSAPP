@@ -360,3 +360,41 @@ done:
     }
     
     #+END_EXAMPLE
+
+** Procedures
+
+   #+CAPTION: Data Transfer [operand size (bits) ~~~~ argument number]
+   | bits | 1    | 2    | 3    | 4    | 5    | 6    |
+   |------+------+------+------+------+------+------|
+   |   64 | %rdi | %rsi | %rdx | %rcx | %r8  | %r9  |
+   |   32 | %edi | %esi | %edx | %ecx | %r8d | %r9d |
+   |   16 | %di  | %si  | %dx  | %cx  | %r8w | %r9w |
+   |    8 | %dil | %sil | %dl  | %cl  | %r8b | %r9b |
+
+
+*** passing control
+
+    The program counter must be set to be starting address of the code for Q upon entry then
+    must set to the instruction in P following the call to Q upon return.
+
+*** passing data
+
+    P must be able to provide one or more parameters to Q, and Q must be able to return a value back to P.
+
+*** allocating and deallocating memory
+
+    Q may need to allocate space for local variables when it begins and then free that storage before it returns.
+
+** Array
+
+   #+CAPTION: E %rdx, i %rcx
+   | Expression | Type | Value            | Assembly code               |
+   |------------+------+------------------+-----------------------------|
+   | E          | int* | X_E              | movq %rdx, %rax             |
+   | E[0]       | int  | M[X_E]           | movl (%rdx), %rax           |
+   | E[i]       | int  | M[X_E + 4i]      | movl (%rdx,%rdx,4), %eax    |
+   | &E[2]      | int* | X_E + 8          | leaq 8(%rdx), %rax          |
+   | E+i-1      | int* | X_E + 4i - 4     | leaq -4(%rdx,%rcx,4), %rax  |
+   | *(E+i-3)   | int  | M[X_E + 4i - 12] | movl -12(%rdx,%rcx,4), %eax |
+   | &E[i]-E    | long | i                | movq %rcx, %rax             |
+

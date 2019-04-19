@@ -1,0 +1,20 @@
+#+TITLE: Practice 39
+
+#+BEGIN_EXAMPLE
+
+3   addq %rdx, %rdi                ; Aptr = X_A + 64 * i
+4   leaq (%rsi,%rcx,4), %rcx       ; Bptr = X_B + 4 * k
+5   leaq 1024(%rcx), %rsi          ; Bend = X_B + 4 * k + 1024
+
+#+END_EXAMPLE
+
+N = 16
+
+A[i][j] = X_A + 4 * (i * N + j) = X_A + 4 * (i * 16 + j) = X_A + 64i + 4j
+
+A[i][0] = X_A + 64i
+
+B[j][k] = X_B + 4 * (j * N + k) = X_B + 4 * (j * 16 + k) = X_B + 64j + 4k
+
+B[0][k] = X_B + 4k
+B[16][k] = X_B + 64 * 16 + 4k = X_B + 1024 + 4k

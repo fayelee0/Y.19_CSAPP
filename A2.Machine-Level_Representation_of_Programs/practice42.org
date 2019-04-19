@@ -1,0 +1,47 @@
+#+TITLE: Practice 42
+
+#+BEGIN_SRC c
+
+struct ELE {
+    long v;
+    struct ELE* P;
+};
+
+long fun(struct ELE* ptr);
+
+#+END_SRC
+
+
+#+BEGIN_SRC asm
+
+.long func(struct ELE* ptr)
+.ptr in %rdi
+fun:
+    movl   $0, %eax
+    jmp    .L2
+.L3:
+    addq   (%rdi), %rax
+    movq   8(%rdi), %rdi
+.L2:
+    testq  %rdi, %rdi
+    jne    .L3
+    rep; ret
+
+#+END_SRC
+
+
+#+BEGIN_SRC c
+
+long func(struct ELE* ptr)
+{
+    long result = 0;
+    while (ptr != 0) {
+        result += ptr->v;
+        ptr = ptr->next;
+    }
+    return result;
+}
+
+#+END_SRC
+
+like a *single linked list*, add all elements value
