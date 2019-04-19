@@ -40,7 +40,7 @@
 *** TODO 并发编程
 
 
-** Labs [0/10]
+** Labs [0/11]
 
 *** TODO Data Lab
 
@@ -51,6 +51,8 @@
 *** TODO Buffer Lab
 
 *** TODO Architecture Lab
+
+*** TODO Architecture Lab Y86
 
 *** TODO Cache Lab
 
