@@ -2,9 +2,9 @@
 #+EMAIL: wizard@pursuetao.com
 * Computer System: A Programmer's Perspctive 
 
-** Pregressing [0/12]
+** Pregressing [1/12]
 
-*** TODO 计算机系统漫游
+*** DONE 计算机系统漫游
 
 
 *** TODO 信息的表示和处理

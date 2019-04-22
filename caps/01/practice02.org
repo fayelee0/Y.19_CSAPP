@@ -1,0 +1,11 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 02
+
+#+BEGIN_EXAMPLE
+S = 2X
+a = 80% = 0.8
+
+S = 1 / ((1-a) + a/k) = 1 / (0.2 + 0.2/k) = 2X
+k = 1.5
+#+END_EXAMPLE

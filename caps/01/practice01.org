@@ -1,0 +1,24 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 01
+ 
+** A
+
+   #+BEGIN_EXAMPLE
+   a = 1500 / 2500 = 3 / 5 = 0.6
+   k = 150 / 100 = 1.5
+
+   S = 1 / ((1-a) + (a/k)) = 1 / (0.4 + 0.4) = 1.25X
+   #+END_EXAMPLE
+
+
+** B
+
+   #+BEGIN_EXAMPLE
+   a = 1500 / 2500 = 0.6
+   
+   S = 1.67X = 5 / 3 = 1 / ((1-a) + a/k) = 1 / (0.4 + 0.6/k)
+   k = 3
+
+   v = k * 100 = 3 * 100 = 300 km/h
+   #+END_EXAMPLE
