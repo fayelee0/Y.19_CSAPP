@@ -1,0 +1,17 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 14
+
+  #+BEGIN_EXAMPLE
+  x = 0x66
+  y = 0x39
+  #+END_EXAMPLE
+
+  | 表达式      |   值 |   | 表达式           | 值 |
+  |-------------+------+---+------------------+----|
+  | x & y       | 0x20 |   | x && y           |  1 |
+  | x \vert y   | 0x7F |   | x \vert\vert y   |  1 |
+  | ~x \vert ~y | 0xDF |   | !x \vert\vert !y |  0 |
+  | x & !y      |    0 |   | x && ~y          |  1 |
+
+

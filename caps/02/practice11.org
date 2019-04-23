@@ -1,0 +1,39 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 11
+
+  #+BEGIN_SRC C
+
+  void inplace_swap(int* x, int* y)
+  {
+      *x = *x ^ *y;
+      *y = *x ^ *y;
+      *x = *x ^ *y;
+  }
+
+  void reverse_array(int a[], int cnt)
+  {
+      for (int first = 0, last = cnt - 1; first <= last; first++, last--) {
+          inplace_swap(&a[first], &a[last]);
+      }
+  }
+  
+  #+END_SRC
+
+** A
+
+   first = k + 1
+   last  = k + 1
+
+
+** B
+
+   a ^ a = 0
+
+
+** C
+
+   first <= last
+   ==>
+   first < last
+
