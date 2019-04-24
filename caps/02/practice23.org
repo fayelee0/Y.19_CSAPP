@@ -1,0 +1,27 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 23
+
+  #+BEGIN_SRC C
+
+  int fun1(unsigned word)
+  {
+      /* 左移之后无符号右移 */
+      return (int) ((word << 24) >> 24);
+  }
+
+  int fun2(unsigned word)
+  {
+      /* 左移之后有符号右移 */
+      return ((int) word << 24) >> 24;
+  }
+  
+  #+END_SRC
+
+
+  |          w |    fun1(w) |    fun2(w) |
+  |------------+------------+------------|
+  | 0x00000076 | 0x00000076 | 0x00000076 |
+  | 0x87654321 | 0x00000021 | 0x00000021 |
+  | 0x000000C9 | 0x000000C9 | 0xFFFFFFC9 |
+  | 0xEDCBA987 | 0x00000087 | 0xFFFFFF87 |
