@@ -1,0 +1,10 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 38
+
+  | k\b | 0  | a  |
+  |-----+----+----|
+  |   0 | a  | 2a |
+  |   1 | 2a | 3a |
+  |   2 | 4a | 5a |
+  |   3 | 8a | 9a |

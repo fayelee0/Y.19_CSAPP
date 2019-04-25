@@ -1,0 +1,91 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 44
+
+  #+BEGIN_SRC C
+
+  /* 32-bit two's complementation machine */
+
+  int x = foo();
+  int y = bar();
+
+  unsigned ux = x;
+  unsigned uy = y;
+  
+  #+END_SRC
+
+** A
+
+   #+BEGIN_SRC C
+   (x > 0) || (x - 1 < 0)
+   #+END_SRC
+   
+   x = INT_MIN
+   x - 1 = INT_MIN - 1 = INT_MAX > 0
+
+   ==> #f
+
+
+** B
+
+   #+BEGIN_SRC C
+
+   (x & 7) != 7 || (x << 29 < 0)
+   
+   #+END_SRC
+
+   ==> #t
+
+
+** C
+
+   #+BEGIN_SRC C
+   (x * x) >= 0
+   #+END_SRC
+
+   (2^16 - 1) * (2^16 - 1) = -2^17 + 1 < 0
+
+   ==> #f
+
+
+** D
+
+   #+BEGIN_SRC C
+   x < 0 || -x <= 0
+   #+END_SRC
+
+   ==> #t
+
+
+** E
+
+   #+BEGIN_SRC C
+   x > 0 || -x >= 0
+   #+END_SRC
+
+   INT_MIN = -INT_MIN < 0
+
+   ==> #f
+
+
+** F
+
+   #+BEGIN_SRC C
+   x + y == uy + ux
+   #+END_SRC
+
+   ux + uy = (x + X(w-1) * 2^w) + (y + Y(w-1) * 2^w)
+           = x + y
+
+   ==> #t           
+
+
+** G
+
+   #+BEGIN_SRC C
+   x * ~y + uy * ux == -x
+   #+END_SRC
+
+   x * ~y + uy * ux = x * ~y + x * y = x * (~y + y) = x * (~y - ~y -1) = -x
+
+   ==> #t

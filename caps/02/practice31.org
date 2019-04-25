@@ -1,0 +1,32 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 31
+
+  #+BEGIN_SRC C
+
+  /* Determine whether arguments can be added without overflow */
+  /* WARNNING: This code is buggy. */
+  int tadd_ok(int x, int y)
+  {
+      int s = x + y;
+      return (s - x == y) && (s - y == x);
+  }
+  
+  #+END_SRC
+
+
+** A
+   
+   s in [-2^w, -2^(w-1))
+
+   s = x + y = x + y + 2^w
+   s - x = y + 2^w = y
+   s - y = x + 2^w = x
+
+
+** B
+
+   s in [2^(w-1), 2^w)
+   s = x + y = x + y - 2^w
+   s - x = y - 2^w = y
+   s - y = x - 2^w = x
