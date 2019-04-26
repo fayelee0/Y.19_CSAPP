@@ -1,0 +1,88 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 54
+
+  #+BEGIN_SRC C
+
+  int x;
+  float f;  (f != +∞, -∞, NaN)
+  double d; (d != +∞, -∞, NaN)
+  
+  #+END_SRC
+
+** A
+
+   #+BEGIN_EXAMPLE
+   x == (int) (double) x
+   #+END_EXAMPLE
+
+   ==> #t
+
+
+** B
+
+   #+BEGIN_EXAMPLE
+   x == (int) (float) x
+   #+END_EXAMPLE
+
+   INT_MAX
+
+   ==> #f
+
+
+** C
+
+   #+BEGIN_EXAMPLE
+   d == (double) (float) d
+   #+END_EXAMPLE
+
+   1e40
+
+   ==> #f
+
+
+** D
+
+   #+BEGIN_EXAMPLE
+   f == (float) (double) f
+   #+END_EXAMPLE
+
+   ==> #t
+
+
+** E
+
+   #+BEGIN_EXAMPLE
+   f == -(-f)
+   #+END_EXAMPLE
+
+   ==> #t
+
+
+** F
+
+   #+BEGIN_EXAMPLE
+   1.0 / 2 == 1 / 2.0
+   #+END_EXAMPLE
+
+   ==> #t
+
+
+** G
+
+   #+BEGIN_EXAMPLE
+   d * d >= 0.0
+   #+END_EXAMPLE
+
+   ==> #t
+
+
+** H
+
+   #+BEGIN_EXAMPLE
+   (f + d) - f == d
+   #+END_EXAMPLE
+
+   (1e20 + 3.14) - 1e20 = 0.0
+
+   ==> #f
