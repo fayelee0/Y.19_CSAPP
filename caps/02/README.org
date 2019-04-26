@@ -111,3 +111,133 @@
        x =  [ X(w),  X(w-1), ...,  X(k+1), 1, 0, ..., 0, 0]
        -x = [~X(w), ~X(w-1), ..., ~X(k+1), 1, 0, ..., 0, 0]
     
+
+* 浮点数表示
+
+  #+BEGIN_EXAMPLE
+  V = (-1)^s * M * 2^E
+
+  符号位 s 决定数值正负
+  阶码   E k位二进制小数 (exp  = [e(k-1), e(k-2), ..., e(1), e(0)])
+  尾数   M n位二进制小数 (frac = [f(n-1), f(n-2), ..., f(1), f(0)])
+
+  float32
+  s  1-bit  
+  k  8-bit  
+  n 23-bit
+
+  float64
+  s  1-bit
+  k 11-bit
+  n 52-bit
+  #+END_EXAMPLE
+
+** 规格化
+
+   *exp 的位模式既不全为 0 也不全为 1*
+   
+   #+BEGIN_EXAMPLE
+   float32 [2^-126, 2^128)
+   (exp != 0) and (exp != 255)
+
+   bias = 2^(8-1) - 1 = 127
+   E = e - bias, (-127, 128) or [-126, 127]
+   M = 1 + f, [1.0, 2.0)
+
+
+   float64 [2^-1022, 2^1024)
+   (exp != 0) and (exp != 2047)
+
+   bias = 2^(11-1) - 1 = 1023
+   E = e - bias (), (-1023, 1024) or [-1022, 1023]
+   M = 1 + f, [1.0, 2.0)
+   #+END_EXAMPLE
+
+
+** 非规格化
+
+   *exp 的位模式全为 0*
+
+   #+BEGIN_EXAMPLE
+   float32 [0.0, 2^-126)
+   exp == 0
+
+   bias = 2^(8-1) - 1 = 127
+   E = 1 - bias = -126
+   M = f, [0.0, 1.0)
+
+
+   float64 [0.0, 2^-1022)
+   exp == 0
+
+   bias = 2^(11-1) - 1 = 1023
+   E = 1 - bias = -1022
+   M = f, [0.0, 1.0)
+   #+END_EXAMPLE
+
+
+** 特殊值
+
+   *exp 的位模式全为 1*
+
+   小数域全为 0 时，表示∞；其他情况表示 NaN
+   
+   #+BEGIN_EXAMPLE
+   exp == 1
+
+   frac = [0, 0, ..., 0, 0]
+   s = 0, +∞
+   s = 1, -∞
+
+   else
+   NaN
+   #+END_EXAMPLE
+
+
+** 舍入
+
+   | method            | 1.40 | 1.60 | 1.50 | 2.50 | -1.50 |             |
+   |-------------------+------+------+------+------+-------+-------------|
+   | round-to-even     | 1.00 | 2.00 | 2.00 | 2.00 | -2.00 |             |
+   | round-toward-zero | 1.00 | 1.00 | 1.00 | 2.00 | -1.00 | truncate(x) |
+   | round-down        | 1.00 | 1.00 | 1.00 | 2.00 | -2.00 | floor(x)    |
+   | round-up          | 2.00 | 2.00 | 2.00 | 3.00 | -1.00 | ceil(x)     |
+
+
+** 计算
+
+   *由于可能发生溢出，或由于舍入而失去精度，浮点数加法和乘法都不满足结合律和分配律*
+   
+   #+BEGIN_EXAMPLE
+   (3.14 + 1e10) - 1e10 = 0.0
+   3.14 + (1e10 - 1e10) = 3.14
+
+   (1e20 * 1e20) * 1e-20 = +∞
+   1e20 * (1e20 * 1e-20) = 1e20
+
+   1e20 * (1e20 - 1e20)      = 0.0
+   1e20 * 1e20 - 1e20 * 1e20 = NaN
+   #+END_EXAMPLE
+
+   #+CAPTION: 浮点数加法和乘法满足单调性
+   #+BEGIN_EXAMPLE
+   if a >= b, and (a, b, x != NaN) then:
+   x + a >= x + b
+
+   (V a, b, c) and (a, b, c != NaN) then:
+   (a >= b) and (c >= 0) => a * c >= b * c
+   (a >= b) and (c <= 0) => a * c <= b * c
+   #+END_EXAMPLE
+
+
+** 类型转换
+
+   (int, float, double)
+
+   1. (int->float)                     数字不会溢出，但是可能被舍入
+   2. (int->double) or (float->double) 能够保留精确的数值，因 double 有更高的精度，也有更大的范围
+   3. (double->float)                  可能溢出也可能被舍入
+   4. (float->int) or (double->int)    值会向零舍入，值也可能溢出                     
+
+
+   
