@@ -14,6 +14,9 @@ int main(void)
         assert(srl(0xFFFFFFFFU, 2) == 0x3FFFFFFFU);
         assert(srl(0x7FFFFFFFU, 2) == 0x1FFFFFFFU);
 
+        assert(sra(0xFFFFFFFF , 2) == 0xFFFFFFFF );
+        assert(sra(0x7FFFFFFF , 2) == 0x1FFFFFFF );
+
         return 0;
 }
 
@@ -27,6 +30,14 @@ unsigned srl(unsigned x, int k)
 
 unsigned sra(int x, int k)
 {
+        int w = sizeof(int) << 3;
+        int m = 1 << (w - 1);
+
         int xsrl = (unsigned) x >> k;
-        return 0;
+        int bias = 0;
+
+        /* if (x < 0) bias = -1 << (w - k) */
+        (x & m) && (bias = -1 << (w - k));
+
+        return xsrl | bias;
 }

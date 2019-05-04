@@ -15,18 +15,35 @@ bool fits_bits(int x, int n);
 
 int main(void)
 {
-        printf("bias : %.2x\n", (unsigned) ~0 << 16);
-        printf("v : %.2x\n", SHRT_MAX+1);
-
         assert(!fits_bits(SHRT_MAX + 1, 16));
         assert( fits_bits(SHRT_MAX    , 16));
 
         return 0;
 }
 
+/**
+ * w = 8, n = 3
+ *
+ * 00000 111 ~ 11111 111 *
+ * ...
+ * 00000 100 ~ 11111 100 *
+ * 00000 011 ~ 00000 011 -   |
+ * ...                       |
+ * 00000 000 ~ 00000 000 -   |
+ *
+ * 11111 111 ~ 11111 111 -   |
+ * ...                       |
+ * 11111 100 ~ 11111 100 -   |
+ * 11111 011 ~ 00000 011 *
+ * ...
+ * 11111 000 ~ 00000 000 *
+ *
+ */
 bool fits_bits(int x, int n)
 {
         int w = sizeof(int) << 3;
-        int b = (unsigned) ~0 << (w - n - 1) << 1;
-        return !(b & x);
+        int o = w - n;
+        int y = (x << o) >> o;
+
+        return !(y ^ x);
 }
