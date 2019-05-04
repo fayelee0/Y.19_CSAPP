@@ -1,0 +1,57 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 82
+
+  #+BEGIN_SRC C
+  /* Create some arbitrary values */
+  int x = random();
+  int y = random();
+  
+  /* Convert to unsigned */
+  unsigned ux = (unsigned) x;
+  unsigned uy = (unsigned) y;
+  #+END_SRC
+
+** A
+
+   #+BEGIN_EXAMPLE
+   (x < y) == (-x > -y)
+   #+END_EXAMPLE
+
+   x == INT_MIN
+
+   ==> #f
+
+
+** B
+
+   #+BEGIN_SRC 
+   ((x + y) << 4) + y - x == 17 * y + 15 * x
+   #+END_SRC
+
+   ((x + y) << 4) + y - x = (x << 4) + (y << 4) + y - x = 17 * y + 15 * x
+
+   ==> #t
+
+
+** C
+
+   #+BEGIN_EXAMPLE
+   ~x + ~y + 1 == ~(x + y)
+   #+END_EXAMPLE
+
+   ~x + ~y + 1 = (-x - 1) + (-y - 1) + 1 = -(x + y) - 1 = ~(x + y)
+
+   ==> #t
+
+
+** D
+
+   #+BEGIN_EXAMPLE
+   ((x >> 2) << 2) <= x
+   #+END_EXAMPLE
+
+   x{2} = {00 | 01 | 10 | 11}     
+   x{2} = {00}                 ; (x >> 2) << 2
+
+   ==> #t

@@ -1,0 +1,38 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 77
+
+** A
+
+   #+BEGIN_SRC C
+   K = 17
+   
+   x << 4 + x 
+   #+END_SRC
+
+
+** B
+
+   #+BEGIN_SRC C
+   K = -7
+   
+   x - x << 3
+   #+END_SRC
+
+
+** C
+
+   #+BEGIN_SRC C
+   K = 60
+
+   x << 6 - x << 2
+   #+END_SRC
+
+
+** D
+
+   #+BEGIN_SRC C
+   K = -112
+
+   x << 4 - x << 7
+   #+END_SRC
