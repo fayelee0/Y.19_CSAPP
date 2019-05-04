@@ -1,0 +1,22 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 83
+
+** A
+
+   n = 0.yyyy...
+   n << k = y.yyyy... = Y + n
+   Y = (n << k) - n = n * (2^k - 1)
+   
+   n = Y / (2^k - 1)
+
+
+** B
+
+   101    = B2U(101)    / (2^3 - 1) = 5/7
+
+   0110   = B2U(0110)   / (2^4 - 1) = 2/5
+
+   010011 = B2U(010011) / (2^6 - 1) = 19/63
+   
+   

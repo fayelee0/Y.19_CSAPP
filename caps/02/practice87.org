@@ -1,0 +1,23 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 87
+
+  #+BEGIN_EXAMPLE
+  bit(s) = 1
+  bit(E) = 5
+  bit(M) = 10
+
+  bias = 2^(5 - 1) - 1 = 15
+  #+END_EXAMPLE
+
+  |          Description | Hex  | M         |   E |           V |        D |
+  |----------------------+------+-----------+-----+-------------+----------|
+  |                   -0 | 8000 | 0         | -14 |          -0 |       -0 |
+  |   Smallest value > 2 | 4001 | 1025/1024 |   1 |    1025/512 | 2.001953 |
+  |                  512 | 6000 | 1         |   9 |         512 |      512 |
+  | Largest denormalized | 03FF | 1-2^-10   | -14 | 2^-14-2^-24 | 0.000061 |
+  |                 -INF | FC00 | -         |   - |        -INF |     -INF |
+  |               0x3BB0 | 3BB0 | 123/64    |  -1 |     123/128 | 0.960938 |
+
+
+
