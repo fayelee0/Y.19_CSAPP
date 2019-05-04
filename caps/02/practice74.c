@@ -27,15 +27,12 @@ int main(void)
 bool tadd_ok(int x, int y)
 {
         int s = x + y;
-        int w = sizeof(int) << 3;
 
-        int tx = x >> (w - 1);
-        int ty = y >> (w - 1);
-        int ts = s >> (w - 1);
+        bool tx = x & INT_MIN;
+        bool ty = y & INT_MIN;
+        bool ts = s & INT_MIN;
 
-        // bool lo = (x > 0) && (y > 0) && (s <= 0);
         bool lo = !tx && !ty && ts;
-        // bool ro = (x < 0) && (y < 0) && (s >= 0);
         bool ro = tx && ty && !ts;
 
         return lo && ro;
@@ -45,8 +42,9 @@ bool tsub_ok(int x, int y)
 {
         bool ret = false;
         bool max = !(y ^ INT_MIN); // is INT_MIN
+        int w = sizeof(int) << 3;
 
-        (max) && (ret = (x >> 31)); // x < 0 is #t
+        (max) && (ret = (x >> (w - 1))); // x < 0 is #t
         (max) || (ret = tadd_ok(x, -y));
         return ret;
 }
