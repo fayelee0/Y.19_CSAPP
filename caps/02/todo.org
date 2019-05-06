@@ -1,6 +1,6 @@
 #+AUTHOR: Fei Li
 #+EMAIL: wizard@pursuetao.com
-* TODOList [19/21]
+* TODOList [21/21]
 
   - [X] 63
   - [X] 70
@@ -21,8 +21,8 @@
   - [X] 93
   - [X] 94
   - [X] 95
-  - [ ] 96
-  - [ ] 97
+  - [X] 96
+  - [X] 97
 
 
 
