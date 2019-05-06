@@ -1,0 +1,40 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 12
+
+  #+BEGIN_EXAMPLE
+  x = 0x87654321
+  #+END_EXAMPLE
+
+** A
+
+   #+BEGIN_SRC C
+   
+   /* 0x00000021 */
+   x & 0xFF
+   
+   #+END_SRC
+
+
+** B
+
+   #+BEGIN_SRC C
+
+   /* 0x789ABC21 */
+   x ^ (~0xFF)
+   
+   /*
+    * a ^ 0 = a ; a ^ 1 = ~a
+    */
+
+   #+END_SRC
+
+
+** C
+
+   #+BEGIN_SRC C
+
+   /* 0x876543FF */
+   x | 0xFF
+   
+   #+END_SRC

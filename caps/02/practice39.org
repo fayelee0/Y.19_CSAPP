@@ -1,0 +1,16 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 39
+
+** A
+
+   (x << n) + (x << (n-1)) + ... + (x << m)
+
+
+** B
+
+   (x << (n+1)) - (x << m)
+
+   if n is most signication, n+1 = w, x << w = 0
+
+   ==> -(x << m)

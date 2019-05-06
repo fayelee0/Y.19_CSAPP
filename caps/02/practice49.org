@@ -1,0 +1,14 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 49
+
+** A
+
+   2^n = 1~n{0000 .... 0000}
+
+   2^(n+1) + 1
+
+
+** B
+
+   2^(23+1) + 1 = 2^24 + 1 = 16777216 + 1 = 16777217

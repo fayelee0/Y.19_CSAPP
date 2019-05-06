@@ -1,0 +1,12 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 28
+
+  | U hex(x) | U dec(x) | T dec(x) | T hex(x) |
+  |----------+----------+----------+----------|
+  |        0 |        0 |        0 |        0 |
+  |        5 |        5 |       11 |        B |
+  |        8 |        8 |        8 |        8 |
+  |        D |       14 |        2 |        2 |
+  |        F |       15 |        1 |        1 |
+  

@@ -1,0 +1,67 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 89
+
+  #+BEGIN_SRC C
+  /* Create some arbitrary values */
+  int x = random();
+  int y = random();
+  int z = random();
+
+  /* Convert to double */
+  double dx = (double) x;
+  double dy = (double) y;
+  double dz = (double) z;
+  #+END_SRC
+
+** A  
+
+   #+BEGIN_EXAMPLE
+   (float) x == (float) dx
+   #+END_EXAMPLE
+
+   int -> double is ok
+
+   ==> #t
+
+
+** B
+
+   #+BEGIN_EXAMPLE
+   dx - dy == (double) (x - y)
+   #+END_EXAMPLE
+
+   overflow
+
+   ==> #f
+
+
+** C
+
+   #+BEGIN_EXAMPLE
+   (dx + dy) + dz = dx + (dy + dz)
+   #+END_EXAMPLE
+
+   ==> #t
+
+
+** D
+
+   #+BEGIN_EXAMPLE
+   (dx * dy) * dz == dx * (dy * dz)
+   #+END_EXAMPLE
+
+   double could not representation 2^53 ~ 2^64
+
+   ==> #f
+
+
+** E
+
+   #+BEGIN_EXAMPLE
+   dx / dx == dz / dz
+   #+END_EXAMPLE
+
+   if dz = 0, dz / dz = NaN
+
+   ==> #f

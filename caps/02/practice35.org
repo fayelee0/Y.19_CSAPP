@@ -1,0 +1,48 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 35
+
+  #+BEGIN_SRC C
+
+  /* Determine whether arguments can be multiplied without overflow */
+  int tmult_ok(int x, int y)
+  {
+      int p = x * y;
+      /* Either x is zero, or dividing p by x gives y */
+      return !x || p / x == y;
+  }
+  
+  #+END_SRC
+
+** 1
+
+   令 0~w  位表示为 u
+   令 w~2w 位表示为 v
+
+   x * y = u + v * 2^w
+
+   u = T2U(p) = p + p(w-1) * 2^w
+
+   令 t = v + p(w-1)
+
+   ==> x * y = p + t * 2^w
+
+   only when t = 0, x * y not overflow.
+
+
+** 2
+
+   p = x * q + r and |r| < |x|
+
+
+** 3
+
+   if q = y
+
+   x * y = x * y + r + t * 2^w
+
+   ==> r + t * 2^w = 0
+
+   ==> |r| < |x| <= 2^w
+
+   ==> r = t = 0

@@ -1,0 +1,11 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 21
+
+  | expression                    | type     | eval |
+  |-------------------------------+----------+------|
+  | -2147483647-1  == 2147483647U | unsigned | #t   |
+  | -2147483647-1  <  2147483647  | signed   | #t   |
+  | -2147483647-1U <  2147483647  | unsigned | #f   |
+  | -2147483647-1  < -2147483647  | signed   | #t   |
+  | -2147483647-1U < -2147483647  | unsigned | #t   |

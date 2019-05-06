@@ -1,0 +1,18 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 86
+
+  #+BEGIN_EXAMPLE
+  bit(s) = 1
+  bit(E) = 15
+  bit(M) = 63
+
+  bias = 2^(15 - 1) - 1 = 16383
+  #+END_EXAMPLE
+
+  | Description                    |                  Value |           Decimal |
+  |--------------------------------+------------------------+-------------------|
+  | Smallest positive denormalized | 0x00000000000000000001 |          2^-16445 |
+  | Smallest positive normalized   | 0x00010000000000000000 |          2^-16382 |
+  | Largest  normalized            | 0x7FFEFFFFFFFFFFFFFFFF | 2^16384 - 2^16320 |
+
