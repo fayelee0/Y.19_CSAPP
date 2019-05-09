@@ -27,3 +27,128 @@
     > file mstore.o
     > x/14xb multstore
     #+END_EXAMPLE
+
+
+** 访问信息
+
+*** 操作数指示符
+    
+    1. 立即数
+    2. 寄存器
+    3. 存储器
+
+
+*** 数据传送指令
+
+    这些指令的寄存器操作数可以是 16 个寄存器有标号部分中的任意一个，寄存器部分的大小必须与指定的最后一个字符指定的大小匹配。
+
+    #+CAPTION: MOV
+    | Instruction  | Effect | Description             |
+    |--------------+--------+-------------------------|
+    | MOV     S, D | D <- S | Move                    |
+    |--------------+--------+-------------------------|
+    | movb         |        | Move byte               |
+    | movw         |        | Move word               |
+    | movl         |        | Move double word        |
+    | movq         |        | Move quad word          |
+    | movabsq I, R | R <- I | Move absolute quad word |
+
+
+    #+CAPTION: MOVZ
+    | Instruction  | Effect             | Description                            |
+    |--------------+--------------------+----------------------------------------|
+    | MOVZ    S, R | R <- ZeroExtend(S) | Move with zero extension               |
+    |--------------+--------------------+----------------------------------------|
+    | movzbw       |                    | Move zero-extended byte to word        |
+    | movzbl       |                    | Move zero-extended byte to double word |
+    | movzbq       |                    | Move zero-extended byte to quad word   |
+    | movzwl       |                    | Move zero-extended word to doubld word |
+    | movzwq       |                    | Move zero-extended word to quad word   |
+
+
+    #+CAPTION: MOVS
+    | Instruction  | Effect                   | Description                                 |
+    |--------------+--------------------------+---------------------------------------------|
+    | MOVS    S, R | R <- SignExtend(S)       | Move with sign extension                    |
+    |--------------+--------------------------+---------------------------------------------|
+    | movsbw       |                          | Move sign-extended byte to word             |
+    | movsbl       |                          | Move sign-extended byte to double word      |
+    | movsbq       |                          | Move sign-extended byte to quad word        |
+    | movswl       |                          | Move sign-extended word to double word      |
+    | movswq       |                          | Move sign-extended word to quad word        |
+    | movslq       |                          | Move sign-extended double word to quad word |
+    | cltq         | %rax <- SignExtend(%eax) | Sign-extend %eax to %rax                    |
+
+
+    #+CAPTION: STACK
+    | Instruction | Effect                    | Description    |
+    |-------------+---------------------------+----------------|
+    | pushq   S   | R[%rsp]    <- R[%rsp] - 8 | Push quad word |
+    |             | M[R[%rsp]] <- S           |                |
+    | popq    D   | D          <- M[R[%rsp]]  | Pop quad word  |
+    |             | R[%rsp]    <- R[%rsp] + 8 |                |
+
+    
+    #+BEGIN_SRC asm
+    movabsq $0x0011223344556677, %rax # %rax = 0011223344556677
+    movb    $0xAA, %dl                # %dl  = AA
+    movb    %dl, %al                  # %rax = 00112233445566AA
+    movsbq  %dl, %rax                 # %rax = FFFFFFFFFFFFFFAA
+    movzbq  %dl, %rax                 # %rax = 00000000000000AA
+    #+END_SRC
+
+
+    #+BEGIN_SRC asm c
+    long exchange(long* xp, long y)
+    { 
+        long x = *xp;
+        *xp = y;
+        return x;
+    }
+
+    # long exchange(long* xp, long y)
+    # xp in %rdi, y in %rsi
+    exchange:
+      movq    (%rdi), %rax
+      movq    %rsi, (%rdi)
+      ret
+    #+END_SRC
+
+    *C 语言所谓的「指针」其实就是地址*
+    间接引用指针就是将该指针放到一个寄存器中，然后在内存引用中使用这个寄存器。
+    局部变量通常是保存在寄存器中，而不是内存中。
+
+
+*** 算术和逻辑操作
+    
+    | Instruction | Effect         | Description              |
+    |-------------+----------------+--------------------------|
+    | leaq   S, D | D <- &S        | Load effective address   |
+    |-------------+----------------+--------------------------|
+    | INC    D    | D <- D + 1     | Increment                |
+    | DEC    D    | D <- D - 1     | Decrement                |
+    | NEG    D    | D <- -D        | Negate                   |
+    | NOT    D    | D <- ~D        | Complement               |
+    |-------------+----------------+--------------------------|
+    | ADD    S, D | D <- D + S     | Add                      |
+    | SUB    S, D | D <- D - S     | Substract                |
+    | IMUL   S, D | D <- D * S     | Multiply                 |
+    | XOR    S, D | D <- D ^ S     | Exclusive-or             |
+    | OR     S, D | D <- D \vert S | Or                       |
+    | AND    S, D | D <- D & S     | And                      |
+    |-------------+----------------+--------------------------|
+    | SAL    k, D | D <- D << k    | Left shift               |
+    | SHL    k, D | D <- D << k    | Left shift (same as SAL) |
+    | SAR    k, D | D <- D >>(A) k | Arithmetic right shift   |
+    | SHR    k, D | D <- D >>(L) k | Logical right shift      |
+
+
+    | Instruction | Effect                                  | Description            |
+    |-------------+-----------------------------------------+------------------------|
+    | imulq   S   | R[%rdx]: R[%rax] <- S * R[%rax]         | Signed full multiply   |
+    | mulq    S   | R[%rdx]: R[%rax] <- S * R[%rax]         | Unsigned full multiply |
+    |-------------+-----------------------------------------+------------------------|
+    | clto    S   | R[%rdx]: R[%rax] <- SignExtend(R[%rax]) | Convert to oct word    |
+    |-------------+-----------------------------------------+------------------------|
+    | idivq   S   | R[%rdx] <- R[%rdx]: R[%rax] mod S       | Signed divide          |
+    | divq    S   | R[%rdx] <- R[%rdx]: R[%rax] / S         | Unsigned divide        |
