@@ -1,0 +1,29 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* 程序的机器级表示
+
+** 程序编码
+
+*** 机器级代码
+
+    计算机系统使用了多种不同形式的抽象，利用更简单的抽象模型来隐藏实现的细节。
+    
+    *最重要的两种抽象*
+    1. 由指令集体系架构来定义机器级程序的格式和行为
+       
+       *ISA 定义了处理器状态、指令的格式，以及每条指令对状态的影响*
+       
+    2. 机器级程序使用的内存地址是虚拟地址
+       
+       *虚拟地址提供的内存模型看上去是一个非常大的字节数组*
+
+
+    #+BEGIN_EXAMPLE
+    gcc -Og -S mstore.c  // mstore.s
+    gcc -Og -c mstore.c  // mstore.o
+
+    objdump -d mstore.o
+    gdb
+    > file mstore.o
+    > x/14xb multstore
+    #+END_EXAMPLE
