@@ -119,36 +119,326 @@
     局部变量通常是保存在寄存器中，而不是内存中。
 
 
-*** 算术和逻辑操作
+** 算术和逻辑操作
     
-    | Instruction | Effect         | Description              |
-    |-------------+----------------+--------------------------|
-    | leaq   S, D | D <- &S        | Load effective address   |
-    |-------------+----------------+--------------------------|
-    | INC    D    | D <- D + 1     | Increment                |
-    | DEC    D    | D <- D - 1     | Decrement                |
-    | NEG    D    | D <- -D        | Negate                   |
-    | NOT    D    | D <- ~D        | Complement               |
-    |-------------+----------------+--------------------------|
-    | ADD    S, D | D <- D + S     | Add                      |
-    | SUB    S, D | D <- D - S     | Substract                |
-    | IMUL   S, D | D <- D * S     | Multiply                 |
-    | XOR    S, D | D <- D ^ S     | Exclusive-or             |
-    | OR     S, D | D <- D \vert S | Or                       |
-    | AND    S, D | D <- D & S     | And                      |
-    |-------------+----------------+--------------------------|
-    | SAL    k, D | D <- D << k    | Left shift               |
-    | SHL    k, D | D <- D << k    | Left shift (same as SAL) |
-    | SAR    k, D | D <- D >>(A) k | Arithmetic right shift   |
-    | SHR    k, D | D <- D >>(L) k | Logical right shift      |
+   | Instruction | Effect         | Description              |
+   |-------------+----------------+--------------------------|
+   | leaq   S, D | D <- &S        | Load effective address   |
+   |-------------+----------------+--------------------------|
+   | INC    D    | D <- D + 1     | Increment                |
+   | DEC    D    | D <- D - 1     | Decrement                |
+   | NEG    D    | D <- -D        | Negate                   |
+   | NOT    D    | D <- ~D        | Complement               |
+   |-------------+----------------+--------------------------|
+   | ADD    S, D | D <- D + S     | Add                      |
+   | SUB    S, D | D <- D - S     | Substract                |
+   | IMUL   S, D | D <- D * S     | Multiply                 |
+   | XOR    S, D | D <- D ^ S     | Exclusive-or             |
+   | OR     S, D | D <- D \vert S | Or                       |
+   | AND    S, D | D <- D & S     | And                      |
+   |-------------+----------------+--------------------------|
+   | SAL    k, D | D <- D << k    | Left shift               |
+   | SHL    k, D | D <- D << k    | Left shift (same as SAL) |
+   | SAR    k, D | D <- D >>(A) k | Arithmetic right shift   |
+   | SHR    k, D | D <- D >>(L) k | Logical right shift      |
 
 
-    | Instruction | Effect                                  | Description            |
-    |-------------+-----------------------------------------+------------------------|
-    | imulq   S   | R[%rdx]: R[%rax] <- S * R[%rax]         | Signed full multiply   |
-    | mulq    S   | R[%rdx]: R[%rax] <- S * R[%rax]         | Unsigned full multiply |
-    |-------------+-----------------------------------------+------------------------|
-    | clto    S   | R[%rdx]: R[%rax] <- SignExtend(R[%rax]) | Convert to oct word    |
-    |-------------+-----------------------------------------+------------------------|
-    | idivq   S   | R[%rdx] <- R[%rdx]: R[%rax] mod S       | Signed divide          |
-    | divq    S   | R[%rdx] <- R[%rdx]: R[%rax] / S         | Unsigned divide        |
+   | Instruction | Effect                                  | Description            |
+   |-------------+-----------------------------------------+------------------------|
+   | imulq   S   | R[%rdx]: R[%rax] <- S * R[%rax]         | Signed full multiply   |
+   | mulq    S   | R[%rdx]: R[%rax] <- S * R[%rax]         | Unsigned full multiply |
+   |-------------+-----------------------------------------+------------------------|
+   | clto    S   | R[%rdx]: R[%rax] <- SignExtend(R[%rax]) | Convert to oct word    |
+   |-------------+-----------------------------------------+------------------------|
+   | idivq   S   | R[%rdx] <- R[%rdx]: R[%rax] mod S       | Signed divide          |
+   | divq    S   | R[%rdx] <- R[%rdx]: R[%rax] / S         | Unsigned divide        |
+
+
+** 控制
+
+   机器代码提供两种基本的低级机制来实现有条件的行为：测试数据值，然后根据测试的结果来改变控制流或者数据流。
+
+*** 条件码
+
+    *最常用的条件码*
+    *CF* 进位标志 /最近的操作使最高位产生了进位，可用来检查无符号操作的溢出/
+    *ZF*   零标志 /最近的操作得到的结果为 0/
+    *SF* 符号标志 /最近的操作得到的结果为负数/
+    *OF* 溢出标志 /最近的操作导致一个补码溢出——正溢出或负溢出/
+
+    #+BEGIN_EXAMPLE
+    int a = random();
+    int b = random();
+    int t = random();
+    t = a + b;
+
+    CF    (unsigned) t < (unsigned) a              # unsigned overflow
+    ZF    (t == 0)                                 # zero
+    SF    (t < 0)                                  # negate
+    OF    (a < 0 == b < 0) && (t < 0 != a < 0)     # signed overflow
+    #+END_EXAMPLE
+
+    #+CAPTION: CMP
+    | Instruction   | Effect  | Description         |
+    |---------------+---------+---------------------|
+    | CMP    S1, S2 | S2 - S1 | Compare             |
+    |---------------+---------+---------------------|
+    | cpmb          |         | Compare byte        |
+    | cpmw          |         | Compare word        |
+    | cpml          |         | Compare double word |
+    | cpmq          |         | Compare quad word   |
+
+    
+    #+CAPTION: TEST
+    | Instruction    | Effect  | Description      |
+    |----------------+---------+------------------|
+    | TEST    S1, S2 | S1 & S2 | Test             |
+    |----------------+---------+------------------|
+    | testb          |         | Test byte        |
+    | testw          |         | Test word        |
+    | testl          |         | Test double word |
+    | testq          |         | Test quad word   |
+
+
+    *访问条件码*
+    1. 可以根据条件码的某种组合，将一个字设置为 0 或 1
+    2. 可以条件跳转到程序的某个其他的部分
+    3. 可以有条件地传送数据
+
+
+    #+CAPTION: SET
+    | Instruction | Synonym | Effect                  | Description                    |
+    |-------------+---------+-------------------------+--------------------------------|
+    | sete    D   | setz    | D <- ZF                 | Equal / zero                   |
+    | setne   D   | setnz   | D <- ~ZF                | Not equal / not zero           |
+    | sets    D   |         | D <- SF                 | Negative                       |
+    | setns   D   |         | D <- ~SF                | Nonnegative                    |
+    | setg    D   | setnle  | D <- ~(SF ^ OF) & ~ZF   | Greater          (signed   > ) |
+    | setge   D   | setnl   | D <- ~(SF ^ OF)         | Greater or equal (signed   >=) |
+    | setl    D   | setnge  | D <- SF ^ OF            | Less             (signed   < ) |
+    | setle   D   | setng   | D <- (SF ^ OF) \vert ZF | Less or equal    (signed   <=) |
+    | seta    D   | setnbe  | D <- ~CF & ~ZF          | Above            (unsigned > ) |
+    | setae   D   | setnb   | D <- ~CF                | Above or equal   (unsigned >=) |
+    | setb    D   | setnae  | D <- CF                 | Below            (unsigned < ) |
+    | setbe   D   | setna   | D <- CF \vert ZF        | Below or equal   (unsigned <=) |
+
+
+    #+CAPTION: JUMP
+    | Instruction     | Synonym | Effect             | Description                    |
+    |-----------------+---------+--------------------+--------------------------------|
+    | jmp    Label    |         | 1                  | Direct jump                    |
+    | jmp    *Operand |         | 1                  | Indirect jump                  |
+    | je     Label    | jz      | ZF                 | Equal / zero                   |
+    | jne    Label    | jnz     | ~ZF                | Not equal / not zero           |
+    | js     Label    |         | SF                 | Negative                       |
+    | jns    Label    |         | ~SF                | Nonnegative                    |
+    | jg     Label    | jnle    | ~(SF ^ OF) & ~ZF   | Greater          (sgined   > ) |
+    | jge    Label    | jnl     | ~(SF ^ OF)         | Greater or equal (signed   >=) |
+    | jl     Label    | jnge    | SF ^ OF            | Less             (signed   < ) |
+    | jle    Label    | jng     | (SF ^ OF) \vert ZF | Less or equal    (signed   <=) |
+    | ja     Label    | jnbe    | ~CF & ~ZF          | Above            (unsigned > ) |
+    | jae    Label    | jnb     | ~CF                | Above or equal   (unsigned >=) |
+    | jb     Label    | jnae    | CF                 | Below            (unsigned < ) |
+    | jbe    Label    | jna     | CF \vert ZF        | Below or equal   (unsigned <=) |
+
+
+*** 条件分支的实现
+
+**** 条件控制
+
+     *将条件表达式和语句从 C 语言翻译成机器代码，最常用的方式是结合有条件和无条件跳转*
+
+     #+BEGIN_SRC c
+     if (test-expr) {
+         then-statement;
+     } else {
+         else-statement;
+     }
+
+     t = test-expr;
+     if (!t) {
+         goto false;
+     }
+     then-statement;
+     goto done;
+
+     false:
+         else-statement;
+     done:
+     #+END_SRC
+
+
+**** 条件转移
+
+     +传统的方式效率底下+
+     +实现条件操作的传统方法是通过使用控制的条件转移。当条件满足时，程序沿着一条执行路径执行，而当条件不满足时，就走另一条路径+
+     
+     *替代的策略*
+     *使用数据的条件转移，计算一个条件操作的两个结果，然后根据条件是否满足从中选取一个*
+     /只有在一些受限制的情况中，这种策略才可行，但是如果可行，就可以用一条简单的条件传送指令来实现它，其更符合现代处理器的性能特性/
+
+
+     *处理器通过使用流水线来获得高性能*
+     在流水线中，一条指令的处理要经过一系列的阶段，每个阶段执行所需操作的一小部分（例如，从内存读取指令、确定指令类型、从内存读数据、执行算术运算、向内存写数据，以及更新程序计数器）
+     这种方法通过重叠连续指令的步骤获得高性能。
+
+     | Instruction   | Synonym | Effect             | Description                    |
+     |---------------+---------+--------------------+--------------------------------|
+     | cmove    S, R | cmovz   | ZF                 | Equal / zero                   |
+     | cmovne   S, R | cmovnz  | ~ZF                | Not equal / not zero           |
+     | cmovs    S, R |         | SF                 | Negative                       |
+     | cmovns   S, R |         | ~SF                | Nonnegative                    |
+     | cmovg    S, R | cmovnle | ~(SF ^ OF) & ~ZF   | Greater          (signed   > ) |
+     | cmovge   S, R | cmovnl  | ~(SF ^ OF)         | Greater or equal (signed   >=) |
+     | cmovl    S, R | cmovnge | SF ^ OF            | Less             (signed   < ) |
+     | cmovle   S, R | cmovng  | (SF ^ OF) \vert ZF | Less or equal    (signed   <=) |
+     | cmova    S, R | cmovnbe | ~CF & ~ZF          | Above            (unsigned > ) |
+     | cmovae   S, R | cmovnb  | ~CF                | Above or equal   (unsigned >=) |
+     | cmovb    S, R | cmovnae | CF                 | Below            (unsigned < ) |
+     | cmovbe   S, R | cmovna  | CF \vert ZF        | Below or equal   (unsigned <=) |
+
+
+     #+BEGIN_SRC c
+     /* C */
+     v = test-expr ? then-expr : else-expr;
+
+     /* tradition jump */
+     if (!test-expr) {
+         goto false;
+     }
+
+     v = then-expr;
+     goto done;
+
+     false:
+         v = else-expr;
+
+     done:
+
+     /* condition move */
+     v  = then-expr;
+     ve = else-expr;
+     t  = test-expr;
+     if (!t) {
+         v = ve;
+     }
+     #+END_SRC
+     
+
+*** 循环
+
+**** do-while
+
+     #+BEGIN_SRC c
+     do {
+         body-statement
+     } while (test-expr);
+
+
+     loop:
+       body-statement
+       t = test-expr
+       if (t) {
+           goto loop;
+       }
+     #+END_SRC
+
+**** while
+
+     #+BEGIN_SRC c
+     /* C */
+     while (test-expr) {
+         body-statement
+     }
+     
+
+     /* while */
+         goto test;
+     loop:
+         body-statement;
+
+     test:
+         t = test-expr;
+         if (t) {
+             goto loop;
+         }
+
+
+     /* do-while */
+     t = test-expr;
+     if (!t) {
+         goto done;
+     }
+
+     do {
+         body-statement;
+     } while (test-expr);
+
+     done:
+
+
+     /* do-while goto */
+     t = test-expr;
+     if (!t) {
+         goto done;
+     }
+     
+     loop:
+         body-statement;
+         t = test-expr;
+         if (t) {
+             goto loop;
+         }
+
+     done:
+         
+     #+END_SRC
+     
+
+**** for
+
+     #+BEGIN_SRC c
+     /* C for */
+     for (init-expr; test-expr; update-expor) {
+         body-statement;
+     }
+     
+     /* C while */
+     init-expr;
+     while (test-expr) {
+         body-statement;
+         update-expr;
+     }
+
+     /* while */
+     init-expr;
+     goto test;
+
+     loop:
+         body-statement;
+         update-expr;
+
+     test:
+         t = test-expr;
+         if (t) {
+             goto loop;
+         }
+
+
+     /* guarded-do */
+     init-expr;
+     t = test-expr;
+     if (!t) {
+         goto done;
+     }
+
+     loop:
+         body-statement;
+         update-expr;
+         t = test-expr;
+         if (t) {
+             goto loop;
+         }
+     
+     done:
+     #+END_SRC
