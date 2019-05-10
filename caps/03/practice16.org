@@ -1,0 +1,64 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 16
+
+  #+BEGIN_SRC c
+
+  void cond(long a, long* p)
+  {
+      if (p && a > *p) {
+          *p = a;
+      }
+  }
+  
+  #+END_SRC
+
+
+  #+BEGIN_SRC asm
+
+  ; void cond(long a, long* p)
+  ; a in %rdi, p in %rsi
+  cond:
+    testq  %rsi,%rsi         p == 0
+    je     .L1               if p > 0 ret
+    cmpq   %rdi,(%rsi)       *p >= a
+    jge    .L1               if *p >= a ret
+    movq   %rdi,(%rsi)       *p = a
+
+  .L1:
+    rep; ret
+  
+  #+END_SRC
+
+** A
+
+   #+BEGIN_SRC c
+
+   void cond(long a, long* p)
+   {
+       if (p == 0) {
+           goto done;
+       }
+
+       if (*p >= a) {
+           goto done;
+       }
+
+       *p = a;
+
+   done:
+       return;
+
+   }
+   
+   #+END_SRC
+
+
+** B
+
+   1. p == 0
+   2. *p >= a
+
+
+   C   use && 
+   ASM use 2 jump

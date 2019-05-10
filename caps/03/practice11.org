@@ -1,0 +1,30 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 11
+
+  #+BEGIN_SRC asm
+
+  xorq %rdx,%rdx
+  
+  #+END_SRC
+
+
+** A
+
+   x ^ x = 0
+
+   ==> set x is 0
+
+
+** B
+
+   movq $0,%rdx
+
+
+** C
+
+   ; 3 bytes
+   xorq %rdx,%rdx
+
+   ; 7 bytes
+   movq $0,%rdx

@@ -1,0 +1,74 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 17
+
+  #+BEGIN_SRC c
+
+  t = test-expr;
+  if (t) {
+      goto true;
+  }
+  else-statement;
+  goto done;
+
+  true:
+      then-statement;
+      
+  done:
+  
+  #+END_SRC
+
+
+  #+BEGIN_SRC c
+
+  long lt_cnt = 0;
+  long ge_cnt = 0;
+
+  long absdiff_se(long x, long y) 
+  {
+      if (x < y) {
+          goto true;
+      }
+
+      ge_cnt++;
+      result = y - x;
+      goto done;
+
+  true:
+      lt_cnt++;
+      result = x - y;
+
+  done:
+      return result;
+  #+END_SRC
+
+
+** B
+
+   *if no else-statement*
+
+   #+BEGIN_SRC c better
+
+   t = test-expr;
+   if (!t) {
+       goto false;
+   }
+   then-statement;
+   goto done;
+
+   done:
+   #+END_SRC
+
+   #+BEGIN_SRC c
+
+   t = test-expr;
+   if (t) {
+       goto true;
+   }
+
+   true:
+       then-statement;
+
+   done:
+       
+   #+END_SRC

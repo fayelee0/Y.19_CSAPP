@@ -1,0 +1,45 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 10
+
+  #+BEGIN_SRC c
+
+  long arith2(long x, long y, long z)
+  {
+      long t1 = ;
+      long t2 = ;
+      long t3 = ;
+      long t4 = ;
+      return t4;
+  }
+  
+  #+END_SRC
+
+
+  #+BEGIN_SRC asm
+
+  ; long arith2(long x, long y, long z)
+  ; x in %rdi, y in %rsi, z in %rdx
+  arith2:
+    orq   %rsi,%rdi   ; t1 = x | y
+    sarq  $3,%rdi     ; t2 = t1 >> 3
+    notq  %rdi        ; t3 = ~t2
+    movq  %rdx,%rax   ; t4 = z
+    subq  %rdi,%rax   ; t4 = t4 - t3
+    ret
+  
+  #+END_SRC
+
+
+  #+BEGIN_SRC c
+
+  long arith2(long x, long y, long z)
+  {
+      long t1 = x | y;
+      long t2 = t1 >> 3;
+      long t3 = ~t2;
+      long t4 = z - t3;
+      return t4;
+  }
+  
+  #+END_SRC

@@ -1,0 +1,27 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 03
+
+  #+BEGIN_SRC asm
+
+  ; memory address is 64-bit, %rbx
+  movb $0xF, (%ebx)
+
+  ; %rax 64-bit, movq
+  movl %rax, (%rsp)
+
+  ; 两个操作数都是内存地址
+  movw (%rax), 4(%rsp)
+
+  ; %sl not register name
+  movb %al, %sl
+
+  ; 目的操作数不可是立即数
+  movq %rax, $0x123
+
+  ; %eax 32-bit, %rdx 64-bit
+  movl %eax, %rdx
+
+  ; %si 16-bit, movw
+  movb %si, 8(%rbp)
+  #+END_SRC

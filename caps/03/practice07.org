@@ -1,0 +1,37 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 07
+
+  #+BEGIN_SRC c
+
+  long scale2(long x, long y, long z)
+  {
+      long t = ;
+      return t;
+  }
+  
+  #+END_SRC
+
+
+  #+BEGIN_SRC asm
+  
+  ; long scale2(long x, long y, long z)
+  ; x in %rdi, y in %rsi, z in %rdx
+  scale2:
+    leaq  (%rdi,%rdi,4),%rax  ; t = 5x
+    leaq  (%rax,%rsi,2),%rax  ; t = 5x + 2y
+    leaq  (%rax,%rdx,8),%rax  ; t = 5x + 2y + 8z
+    ret
+
+  #+END_SRC
+
+
+  #+BEGIN_SRC c
+
+  long scale2(long x, long y, long z)
+  {
+      long t = 5 * x + 2 * y + 8 * z;
+      return t;
+  }
+  
+  #+END_SRC

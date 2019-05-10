@@ -1,0 +1,12 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 02
+
+  #+BEGIN_SRC asm
+  movl %eax, (%rsp)
+  movw (%rax), %dx
+  movb $0xFF, %bl
+  movb (%rsp,%rdx,4), %dl
+  movq (%rdx), %rax
+  movw %dx, (%rax)
+  #+END_SRC

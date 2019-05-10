@@ -1,0 +1,16 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 22
+
+** A
+
+   n         = 12
+   12!       = 479001600
+   INT32_MAX = 2147483647
+
+
+** B
+
+   n         = 20
+   20!       = 2432902008176640000
+   INT64_MAX = 9223372036854775807

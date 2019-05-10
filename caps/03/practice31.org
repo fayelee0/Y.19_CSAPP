@@ -1,0 +1,101 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 31
+
+  #+BEGIN_SRC c
+
+  void switcher(long a, long b, long c, long* dest)
+  {
+      long val;
+      switch (a) {
+          case:          /* Case A */
+              c = ;
+          case:          /* Case B */
+              val = ;
+              break;
+          case:          /* Case C */
+          case:          /* Case D */
+              val = ;
+              break;
+          case:          /* Case E */
+              val = ;
+              break;
+          default:
+              val = ;
+      }
+      *dest = val;
+  }
+  
+  #+END_SRC
+
+
+  #+BEGIN_SRC asm
+
+  ; void switcher(long a, long b, long c, long* dest)
+  ; a in %rdi, b in %rsi, c in %rdx, dest in %rcx
+  switcher:
+    cmpq  $7,%rdi               ; a:7
+    ja    .L2                   ; if (a > 7) goto .L2
+    jmp   *.L4(,%rdi,8)         ; goto *jt
+    .section .rodata
+  .L7:                          ; Case A
+    xorq  $15,%rsi              ; b = b ^ 0xF
+    movq  %rsi,%rdx             ; c = b
+  .L3:                          ; Case B
+    leaq  112(%rdx),%rdi        ; val = 112 + c
+    jmp   .L6                   ; goto .L6
+  .L5:                          ; Case C and D
+    leaq  (%rdx,%rsi),%rdi      ; val = c + b
+    salq  $2,%rdi               ; val = a << 2
+    jmp   .L6                   ; goto .L6
+  .L2:                          ; Case default
+    movq  %rsi,%rdi             ; val = b
+  .L6:                          ; Case E
+    movq  %rdi,(%rcx)           ; *dest = val
+    ret
+  
+
+  .L4:
+    .quad  .L3                  ; Case B
+    .quad  .L2                  ; Case default
+    .quad  .L5                  ; Case C 
+    .quad  .L2                  ; Case default
+    .quad  .L6                  ; Case E
+    .quad  .L7                  ; Case A
+    .quad  .L2                  ; Case default
+    .quad  .L5                  ; Case C 
+  #+END_SRC   
+
+  #+BEGIN_SRC c
+
+  void switcher(long a, long b, long c, long* dest)
+  {
+      long val;
+      switch (a) {
+      case 5:                /* Case A */
+          c = b ^ 15;
+      case 0:                /* Case B */
+          val = 112 + c;
+          break;
+      case 2:                /* Case C */
+      case 7:                /* Case D */
+          val = (c + b) << 2;
+          break;
+      case 4:                /* Case E */
+          val = a;
+          break;
+      default:
+          val = b;
+      }
+      *dest = val;
+  }
+  
+  #+END_SRC
+
+
+  1. (ja .L2)                          ==> case default
+  2. (jt line4 .L5) and (jt line9 .L5) ==> case C and case D
+  3. (line6 .L7) no jump               ==> case A
+  4. (line9 .L3)                       ==> case B
+  5. (line18 .L6)                      ==> case E
+

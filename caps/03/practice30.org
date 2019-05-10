@@ -1,0 +1,52 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 30
+
+  #+BEGIN_SRC c
+
+  void switch2(long x, long* dest)
+  {
+      long val = 0;
+      switch (x) {
+      
+      }
+      *dest = val;
+  }
+  
+  #+END_SRC
+
+
+  #+BEGIN_SRC asm
+  ; void switch2(long x, long* dest)
+  ; x in %rdi
+  switch2:
+    addq   $1,%rdi          ; x + 1
+    cmpq   $8,%rdi          ; (x + 1) : 8
+    ja     .L2              ; case default
+    jmp    *.L4(,%rdi,8)
+  .L4
+    .quad  .L9              ; case -1
+    .quad  .L5              ; case  0
+    .quad  .L6              ; case  1
+    .quad  .L7              ; case  2
+    .quad  .L2              ; case  3-
+    .quad  .L7              ; case  4
+    .quad  .L8              ; case  5
+    .quad  .L2              ; case  6-
+    .quad  .L5              ; case  7
+  #+END_SRC
+
+
+** A
+
+   -1, 0, 1, 2, 4, 5, 7
+
+
+** B  
+   
+   .L5 ~ 0, 7
+
+
+** C
+
+   .L7 ~ 2, 4

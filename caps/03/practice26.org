@@ -1,0 +1,58 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 26
+
+  #+BEGIN_SRC c
+
+  long fun_a(unsigned long x)
+  {
+      long val = 0;
+      while () {
+      }
+      return ;
+  }
+  
+  #+END_SRC
+
+
+  #+BEGIN_SRC asm
+
+  ; long fun_a(unsigned long x)
+  ; x in %rdi
+  fun_a:
+    movl   $0,%eax         ; val = 0
+    jmp    .L5             ; goto .L5
+  .L6:
+    xorq   %rdi,%rax       ; val = val ^ x
+    shrq   %rdi            ; x = x >> 1
+  .L5:
+    testq  %rdi,%rdi       ; x:x
+    jne    .L6             ; if (x != 0) goto .L6
+    andl   $1,%eax         ; val & 1
+    ret
+  
+  #+END_SRC
+
+** A
+
+   *jump to middle*
+
+
+** B
+
+  #+BEGIN_SRC c
+  long fun_a(unsigned long x)
+  {
+      long val = 0;
+      while (x != 0) {
+          val ^= x;
+          x >>= 1;
+      }
+      return val & 1;
+  }
+  #+END_SRC
+
+
+** C
+
+   if val = 0 is even 1's, otherwise odd 1's

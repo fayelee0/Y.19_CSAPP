@@ -1,0 +1,51 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 15
+
+** A
+
+   #+BEGIN_SRC asm
+
+   4003fa: 74 02        je    XXXXXX
+   4003fc: ff d0        callq *%rax
+   
+   #+END_SRC
+
+   ==> 4003fe
+
+
+** B
+
+   #+BEGIN_SRC asm
+
+   40042f: 74 f4        je  XXXXXX
+   400431: 5d           pop %rbp
+   
+   #+END_SRC
+
+   ==> 400425
+
+
+** C
+
+   #+BEGIN_SRC asm
+
+   XXXXXX: 77 02        ja  400547
+   XXXXXX: 5d           pop %rbp
+   
+   #+END_SRC
+
+   ==> 400543
+   ==> 400545
+
+
+** D
+
+   #+BEGIN_SRC asm
+
+   4005e8: e9 73 ff ff ff        jmpq XXXXXX
+   4005ed: 90                    nop
+   
+   #+END_SRC
+
+   ==> 400560

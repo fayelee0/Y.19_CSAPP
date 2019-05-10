@@ -1,0 +1,72 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 18
+
+  #+BEGIN_SRC c
+
+  long test(long x, long y, long z)
+  {
+      long val = ;
+      if () {
+          if () {
+              val = ;
+          } else {
+              val = ;
+          }
+      } else if {
+          val = ;
+      }
+      return va;
+  }
+  
+  #+END_SRC
+
+
+  #+BEGIN_SRC asm
+
+  ; long test(long x, long y, long z)
+  ; x in %rdi, y in %rsi, z in %rdx
+  test:
+    leaq   (%rdi,%rsi),%rax     ; t = x + y
+    addq   %rdx,%rax            ; t = t + z
+    cmpq   $-3,%rdi             ; x:-3
+    jge    .L2                  ; x >= -3 jump to .L2
+    cmpq   %rdx,%rsi            ; y:z
+    jge    .L3                  ; y >= z jump to .L3
+    movq   %rdi,%rax            ; t = x
+    imulq  %rsi,%rax            ; t = y * t
+    ret
+  .L3:
+    movq   %rsi,%rax            ; t = y
+    imulq  %rdx,%rax            ; t = t * z
+    ret
+  .L2:
+    cmpq   $2,%rdi              ; x:2
+    jle    .L4                  ; x <= 2 jump to .L4
+    movq   %rdi,%rax            ; t = x
+    imulq  %rdx,%rax            ; t = t * z
+  .L4:
+    rep; ret
+  
+  #+END_SRC
+
+  #+BEGIN_SRC c
+
+  long test(long x, long y, long z)
+  {
+      long val = x + y + z;
+      if (x < -3) {
+          if (y < z) {
+              val = x * y;
+          } else {
+              val = y * z;
+          }
+      } else if (x > 2) {
+          val = x * z;
+      }
+      return val;
+  }
+  
+  #+END_SRC
+
+  

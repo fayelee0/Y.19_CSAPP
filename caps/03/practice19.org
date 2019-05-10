@@ -1,0 +1,19 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 19
+
+  TOK  = 16
+  TAVG = 31
+
+** A
+
+   TMP  = 2 * (TAVG - TOK)
+        = 2 * (31 - 16)
+        = 30
+
+
+** B
+
+   30 + 16 = 46
+   
+   

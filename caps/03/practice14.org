@@ -1,0 +1,115 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 14
+
+  #+BEGIN_SRC c
+
+  #define TEST ...
+
+  typedef ... data_t;
+
+  int test(data_t a)
+  {
+      return a TEST 0;
+  }
+  
+  #+END_SRC
+
+** A
+
+   #+BEGIN_SRC asm
+
+   testq  %rdi,%rdi
+   setge  %al
+   
+   #+END_SRC
+
+
+   #+BEGIN_SRC c
+
+   int test(long a)
+   {
+       return a >= 0;
+   }
+   
+   #+END_SRC
+
+
+** B
+
+   #+BEGIN_SRC asm
+
+   testw  %di,%di
+   sete   %al
+   
+   #+END_SRC
+
+   
+   #+BEGIN_SRC c
+
+   int test(short a)
+   {
+       return a == 0;
+   }
+   
+   #+END_SRC
+
+
+   #+BEGIN_SRC c
+
+   int test(unsigned short a)
+   {
+       return a == 0;
+   }
+   
+   #+END_SRC
+
+
+** C
+
+   #+BEGIN_SRC asm
+
+   testb  %dil,%dil
+   seta   %al
+   
+   #+END_SRC
+
+
+   #+BEGIN_SRC c
+
+   int test(unsigned char a)
+   {
+       return a > 0;
+   }
+   
+   #+END_SRC
+
+
+** D
+
+   #+BEGIN_SRC asm
+
+   testl  %edi,%edi
+   setne  %al
+   
+   #+END_SRC
+
+
+   #+BEGIN_SRC c
+
+   int test(int a)
+   {
+       return a != 0;
+   }
+   
+   #+END_SRC
+
+
+   #+BEGIN_SRC c
+
+   int test(unsigned a)
+   {
+       return a != 0;
+   }
+   
+   #+END_SRC

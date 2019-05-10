@@ -1,0 +1,56 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 28
+
+  #+BEGIN_SRC c
+
+  long fun_b(unsigned long x) 
+  {
+      long val = 0;
+      long i;
+      for (; ;) {
+      }
+      return val;
+  }
+  
+  #+END_SRC
+
+
+  #+BEGIN_SRC asm
+
+  ; long fun_b(unsigned long x)
+  ; x in %rdi
+
+  fun_b:
+    movl  $64,%edx    ; i = 64
+    movl  $0,%eax     ; val = 0
+  .L10:
+    movq  %rdi,%rcx   ; t = x
+    andl  $1,%ecx     ; t = 1 & x
+    addq  %rax,%rax   ; val *= 2
+    orq   %rcx,%rax   ; val = val | t
+    shrq  %rdi        ; x = x >> 1
+    subq  $1,%rdx     ; i = i - 1
+    jne   .L10        ; if (i != 0) goto .L10
+    rep; ret
+  
+  #+END_SRC
+
+
+  #+BEGIN_SRC c
+
+  long fun_b(unsigned long x)
+  {
+      long val = 0;
+      long i;
+      for (i = 64; i != 0; i--) {
+          // val = (2 * val) | (t & 1);
+          val = (val << 1) | (t & 1);
+          x >>= 1;
+      }
+      return val;
+  }
+  
+  #+END_SRC
+
+  *reverse x bit representation*

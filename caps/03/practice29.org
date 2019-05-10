@@ -1,0 +1,56 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 29
+
+  #+BEGIN_SRC c
+
+  /* Example of for loop containing a continue statement */
+  /* Sum even numbers between 0 and 9 */
+  long sum = 0;
+  long i;
+  for (i = 0; i < 10; i++) {
+      if (i & 1) {
+          continue;
+      }
+      sum += i;
+  }
+  
+  #+END_SRC
+
+
+** A
+
+   #+BEGIN_SRC c
+
+   long sum = 0;
+   long i = 0;
+   while (i < 10) {
+       if (i & 1) {
+           continue;
+       }
+       sum += i;
+       i++;
+   }
+   
+   #+END_SRC
+
+   *when execute continue, update-expr not execute*
+
+
+** B
+
+   #+BEGIN_SRC c
+
+   long sum = 0;
+   long i = 0;
+   while (i < 10) {
+       if (i & 1) {
+           goto update;
+       }
+       
+       sum += i;
+   update:
+       i++;
+   }
+   
+   #+END_SRC

@@ -1,0 +1,13 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 06
+
+  #+CAPTION: x in %rax, y in %rcx
+  | expression               | result        |
+  |--------------------------+---------------|
+  | leaq 6(%rax),%rdx        | x + 6         |
+  | leaq (%rax,%rcx),%rdx    | x + y         |
+  | leaq (%rax,%rcx,4),%rdx  | x + 4 * y     |
+  | leaq 7(%rax,%rax,8),%rdx | 9 * x + 7     |
+  | leaq 0xA(,%rcx,4),%rdx   | 4 * y + 10    |
+  | leaq 9(%rax,%rcx,2),%rdx | x + 2 * y + 9 |
