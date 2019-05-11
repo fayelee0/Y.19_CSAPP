@@ -1,0 +1,33 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 33
+
+  #+BEGIN_SRC c
+
+  *u += a;
+  *v += b;
+
+  return sizeof(a) + sizeof(b);
+  
+  #+END_SRC
+
+
+  #+BEGIN_SRC asm
+
+  procprob:
+    movslq  %edi,%rdi
+    addq    %rdi,(%rdx)
+    addb    %sil,(%rcx)
+    movl    $6,%eax
+    ret
+  
+  #+END_SRC
+
+
+  #+BEGIN_SRC c
+
+  int procprob(int a, long* u, short b, char* v);
+
+  int procprob(int b, long* v, short a, char* u);
+  
+  #+END_SRC

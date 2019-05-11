@@ -1,0 +1,45 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 34
+
+  #+BEGIN_SRC asm
+
+  ; long P(long x)
+  ; x in %rdi
+  P:
+    pushq %r15
+    pushq %r14
+    pushq %r13
+    pushq %r12
+    pushq %rbp
+    pushq %rbx
+    subq  $24,%rsp
+    movq  %rdi,%rbx         ; a0
+    leaq  1(%rdi),%r15      ; a1
+    leaq  2(%rdi),%r14      ; a2
+    leaq  3(%rdi),%r13      ; a3
+    leaq  4(%rdi),%r12      ; a4
+    leaq  5(%rdi),%rbp      ; a5
+    leaq  6(%rdi),%rax      ; store a6 to %rax
+    movq  %rax,(%rsp)       ; move a6 to (%rsp)
+    leaq  7(%rdi),%rdx      ; store a7 to %rdx
+    movq  %rdx,8(%rsp)      ; move a7 to 8(%rsp)
+    movl  $0,%eax
+    call  Q
+    ...
+  
+  #+END_SRC
+
+** A  
+
+   a0 ~ a5 store in %rbx, %r15, %r14, %r13, %r12, %rbp
+
+
+** B
+
+   a6, a7 store in (%rsp), 8(%rsp)
+
+
+** C
+
+   it has 8 params
