@@ -1,0 +1,64 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 46
+
+  #+BEGIN_SRC c
+
+  char* get_line()
+  {
+      char buf[4];
+      char* result;
+      gets(buf);
+      result = malloc(strlen(buf));
+      strcpy(result, buf);
+      return result;
+  }
+  
+  #+END_SRC
+
+  #+BEGIN_SRC asm
+
+  char* get_line()
+  000000000000400720 <get_line>:
+    400720: 53                push  %rbx
+    400721: 48 83 ec 10       sub   $0x10, %rsp
+
+  Diagram stack at this point
+    400725: 48 89 e7          mov   %rsp, %rdi
+    400728: e8 73 ff ff ff    callq 4006a0 <gets>
+  
+  #+END_SRC
+
+
+** A
+
+   | 00 00 00 00 00 40 00 76 | return address |
+   | 01 23 45 67 89 AB CD EF | saved %rbx     |
+   |                         |                |
+   |                         |                |
+   |                         | buf = %rsp     |
+
+
+** B
+
+   | 00 00 00 00 00 40 00 34 | return address |
+   | 33 32 31 30 39 38 37 36 | saved %rbx     |
+   | 35 34 33 32 31 30 39 38 |                |
+   | 37 36 35 34 33 32 31 30 | buf = %rsp     |
+
+
+** C
+
+   0x400034
+
+
+** D
+
+   %rbx
+
+
+** E
+
+   malloc(strlen(buf) + 1)
+
+   if (result == NULL)

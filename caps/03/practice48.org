@@ -1,0 +1,74 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 48
+
+  #+BEGIN_SRC c
+
+  int len(char* s)
+  {
+      return strlen(s);
+  }
+
+  void iptoa(char* s, long* p)
+  {
+      long val = *p;
+      sprintf(s, "%ld", val);
+  }
+
+  int intlen(long x)
+  {
+      long v;
+      char buf[12];
+      v = x;
+      iptoa(buf, &v);
+      return len(buf);
+  }
+  
+  #+END_SRC
+
+
+  #+BEGIN_SRC asm
+
+  ; int intlen(long x)
+  ; x in %rdi
+  intlen:
+    subq $40, %rsp
+    movq %rdi, 24(%rsp)
+    leaq 24(%rsp), %rsi
+    movq %rsp, %rdi
+    call iptoa
+  
+  #+END_SRC
+
+  
+  #+BEGIN_SRC asm
+
+  ; int intlen(long x)
+  ; x in %rdi
+  intlen:
+    subq $56, %rsp
+    movq %fs:40, %rax
+    movq %rax, 40(%rsp)
+    xorl %eax, %eax
+    movq %rdi, 8(%rsp)
+    leaq 8(%rsp), %rsi
+    leaq 16(%rsp), %rdi
+    call iptoa
+  
+  #+END_SRC
+
+
+** A
+
+   buf        %rsp
+   v          %rsp + 24
+   
+
+   buf        %rsp + 16
+   v          %rsp + 8
+   canary     %rsp + 40
+
+
+** B
+
+   version2 buf position top of v, if buf increse will not override v area

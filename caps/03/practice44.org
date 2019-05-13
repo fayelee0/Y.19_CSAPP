@@ -1,0 +1,84 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 44
+
+** A  
+
+   #+BEGIN_SRC c
+
+   struct P1 {
+       int  i;
+       char c;
+       int  j;
+       char d;
+   };   
+
+   #+END_SRC
+
+   0    4    8    12
+   ---- ---- ---- ---- (16) 4
+   i    c    j    d
+
+
+** B   
+
+   #+BEGIN_SRC c
+
+   struct P2 {
+       int  i;
+       char c;
+       char d;
+       long j;
+   };
+   
+   #+END_SRC
+
+   0    45    8
+   ---- -- -- -------- (16) 8
+   i    cd    j
+
+
+** C
+
+   #+BEGIN_SRC c
+
+   struct P3 {
+       short w[3];
+       char  c[3];
+   }
+   
+   #+END_SRC
+
+
+   w  w  w  ccc 
+   -- -- -- --- x (10) 2
+
+
+** D
+
+   #+BEGIN_SRC c
+
+   struct P4 {
+       short w[5];
+       char* c[3];
+   };
+   
+   #+END_SRC
+
+   w  w  w  w  w           c        c        c
+   -- -- -- -- -- xx xx xx -------- -------- -------- (40) 8
+
+
+** E
+
+   #+BEGIN_SRC c
+
+   struct P5 {
+       struct P3 a[2];
+       struct P2 t;
+   };
+   
+   #+END_SRC
+
+   0          10
+   ---------- ---------- xxxx ---------------- (40) 8

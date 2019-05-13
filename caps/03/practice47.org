@@ -1,0 +1,25 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 47
+
+  #+BEGIN_EXAMPLE
+  10000
+
+  0xFFFFb754 ~ 0xFFFFd754
+  #+END_EXAMPLE
+
+
+** A
+
+   0xFFFFd754
+   0xFFFFb754
+   ----------
+   0x    2000 = 2 * 16^3 = 8192 = 2^13
+
+
+** B
+
+   128 = 2^7
+
+
+   2^13 / 2^7 = 2^6 = 64

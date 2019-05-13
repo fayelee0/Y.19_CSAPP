@@ -1,0 +1,55 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 45
+
+  #+BEGIN_SRC c
+
+  struct {
+      char*  a;
+      short  b;
+      double c;
+      char   d;
+      float  e;
+      char   f;
+      long   g;
+      int    h;
+  } rec;
+  
+  #+END_SRC
+
+
+** A
+
+   0        8         16       24    28   32        40       48
+   -------- -- xxxxxx -------- - xxx ---- - xxxxxxx -------- ---- xxxx (56)
+   a        b         c        d     e    f         g        h
+
+
+** B
+
+   56
+
+
+** C
+
+   #+BEGIN_SRC c
+
+   struct {
+       char*  a;
+       double c;
+       long   g;
+       float  e;
+       int    h;
+       short  b;
+       char   d;
+       char   f;
+   } rec;
+   
+   #+END_SRC
+
+   0        8        16       24   28   32 34 35
+   -------- -------- -------- ---- ---- -- -  -  xxxx (40)
+   a        c        g        e    h    b  d  f
+
+
+   40 bytes
