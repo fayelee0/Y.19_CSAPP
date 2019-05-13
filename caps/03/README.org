@@ -481,3 +481,33 @@
     1. 寄存器不足够存放所有的本地数据
     2. 对一个局部变量使用地址运算符 *&* ，因此必须能够为它产生一个地址
     3. 某些局部变量是数据和结构，因此必须能够通过数组和结构引用被访问到
+
+
+** 数组分配和访问
+
+   #+BEGIN_EXAMPLE
+   int E[N]
+
+   E[i] ==> movl (%rdx,%rcx,4), %eax
+   #+END_EXAMPLE
+
+   
+   #+CAPTION: E in %rdx, i in %rcx, store in %rax
+   | Expression | Type | Value           | Assembly code               |
+   |------------+------+-----------------+-----------------------------|
+   | E          | int* | Xe              | movq %rdx, %rax             |
+   | E[0]       | int  | M[Xe]           | movl (%rdx), %eax           |
+   | E[i]       | int  | M[Xe + 4i]      | movl (%rdx,%rcx,4), %eax    |
+   | &E[2]      | int* | Xe + 8          | leaq 8(%rdx), %rax          |
+   | E+i-1      | int* | Xe + 4i - 4     | leaq -4(%rdx,%rcx,4), %rax  |
+   | *(E+i-3)   | int  | M[Xe + 4i - 12] | movl -12(%rdx,%rcx,4), %eax |
+   | &E[i]-E    | long | i               | movq %rcx, %rax             |
+
+
+   #+CAPTION: nested arrays
+   #+BEGIN_EXAMPLE
+   int A[5][3];
+
+   typedef int row3_t[3];
+   row3_t A[5];
+   #+END_EXAMPLE

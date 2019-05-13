@@ -1,0 +1,12 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 39
+
+  &D[i][j] = Xd + L * (C * i + j)
+
+  Aptr     = &A[i][0]     = X + 4 * (N * i + 0)
+  Aptr + 1 = &A[i][0] + 1 = X + 4 * (N * i + 1)
+
+  Bptr     = &B[0][k] = X + 4 * (N * 0 + k)
+  Bptr + N = &B[0][k] = X + 4 * (N * 1 + k)
+  Bend     = &B[N][k] = X + 4 * (N * N + k)
