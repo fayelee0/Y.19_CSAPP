@@ -1,0 +1,55 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 53
+
+  #+BEGIN_SRC c
+
+  typedef ... arg1_t;
+  typedef ... arg2_t;
+  typedef ... arg3_t;
+  typedef ... arg4_t;
+
+  double funct1(arg1_t p, arg2_t q, arg3_t r, arg4_t s)
+  {
+      return p / (q + r) - s;
+  }
+  
+  #+END_SRC
+
+  
+  #+BEGIN_SRC asm
+
+  ; double funct1(arg1_t1 p, arg2_t q, arg3_t r, arg4_t s)
+  funct1:
+    vcvtsi2ssq   %rsi, %xmm2, %xmm2      ; q~long -> float
+    vaddss       %xmm0, %xmm2, %xmm0     ; r~float           ; q + r | r + q
+    vcvtsi2ss    %edi, %xmm2, %xmm2      ; p int -> float
+    vdivss       %xmm0, %xmm2, %xmm0     ; p / (q + r)
+    vcvtss2sd    %xmm0, %xmm0, %xmm0     ; s float -> double
+    vsubsd       %xmm1, %xmm0, %xmm0     ; p / (q + r) - s
+    ret
+  
+  #+END_SRC
+
+  arg1_t p in %edi , int
+  arg2_t q in %rsi , long
+  arg3_t r in %xmm0, float 
+  arg4_t s in %xmm1, double
+
+  #+BEGIN_SRC c
+
+  typedef int    arg1_t; // p
+  typedef long   arg2_t; // q
+  typedef float  arg3_t; // r
+  typedef double arg4_t; // s
+  
+  #+END_SRC
+
+  #+BEGIN_SRC c
+  
+  typedef int    arg1_t; // p
+  typedef float  arg2_t; // q
+  typedef long   arg3_t; // r
+  typedef double arg4_t; //s
+
+  #+END_SRC

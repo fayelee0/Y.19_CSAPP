@@ -1,0 +1,25 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 51
+
+  #+BEGIN_SRC c
+
+  typedef ... src_t;
+  typedef ... dst_t;
+
+  dst_t cvt(src_t x)
+  {
+      dst_t y = (dst_t) x;
+      return y;
+  }
+  
+  #+END_SRC
+
+
+  | Tx     | Ty     | Instruction                    |
+  |--------+--------+--------------------------------|
+  | long   | double | vcvtsi2sdq %rdi, %xmm0, %xmm0  |
+  | double | int    | vcvtsd2si  %xmm0, %edi         |
+  | double | float  | vcvtss2sd  %xmm0, %xmm0, %xmm0 |
+  | long   | float  | vcvtsi2ssq %rdi, %xmm0, %xmm0  |
+  | float  | long   | vcvtss2siq %xmm0, %rdi         |

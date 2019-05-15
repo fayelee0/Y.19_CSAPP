@@ -1,0 +1,50 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 52
+
+** A  
+
+   #+BEGIN_SRC c
+   double g1(double a, long b, float c, int d);
+   #+END_SRC
+
+   | a | %xmm0 |
+   | b | %rdi  |
+   | c | %xmm1 |
+   | d | %esi  |
+
+
+** B
+
+   #+BEGIN_SRC c
+   double g2(int a, double* b, float* c, long d);
+   #+END_SRC
+
+   | a | %edi |
+   | b | %rsi |
+   | c | %rdx |
+   | d | %rcx |
+
+
+** C
+
+   #+BEGIN_SRC c
+   double g3(double* a, double b, int c, float d);
+   #+END_SRC
+
+   | a | %rdi  |
+   | b | %xmm0 |
+   | c | %esi  |
+   | d | %xmm1 |
+
+
+** D
+
+   #+BEGIN_SRC c
+   double g4(float a, int* b, float c, double d);
+   #+END_SRC
+
+   | a | %xmm0 |
+   | b | %rdi  |
+   | c | %xmm1 |
+   | d | %xmm2 |

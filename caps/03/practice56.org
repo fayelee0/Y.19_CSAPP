@@ -1,0 +1,65 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 56
+
+  #+BEGIN_SRC c
+
+  #define EXPR ...
+
+  double simplefun(double x)
+  {
+      return EXPR(x);
+  }
+  
+  #+END_SRC
+
+** A  
+
+   #+BEGIN_SRC asm
+
+     vmovsd .LC1(%rip), %xmm1
+     vandpd %xmm1, %xmm0, %xmm0
+   .LC1:
+     .long  4294967295
+     .long  2147493647
+     .long  0
+     .long  0
+   
+   #+END_SRC
+   
+   t = 0x7fffffffffffffff
+   x & t = fabs(x)
+
+   ==> fabs(x)
+
+** B
+
+   #+BEGIN_SRC asm
+
+   vxorpd %xmm0, %xmm0, %xmm0
+   
+   #+END_SRC
+
+   x ^ x = 0
+   
+   ==> set x = 0
+
+
+** C
+
+   #+BEGIN_SRC asm
+
+     vmovsd .LC2(%rip), %xmm1
+     vxorpd %xmm1, %xmm0, %xmm0
+   .LC2:
+     .long  0
+     .long  -2147483648
+     .long  0
+     .long  0
+   
+   #+END_SRC
+
+   t = 0x10000000000000000
+   x ^ t = -x
+   
+   ==> -x

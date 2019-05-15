@@ -599,3 +599,63 @@
 
      
 **** 限制可执行代码区域     
+
+
+** 浮点数代码
+
+   #+CAPTION: VMOV
+   | Instruction | Source | Destination | Description                           |
+   |-------------+--------+-------------+---------------------------------------|
+   | vmovss      | M32    | X           | Move single precision                 |
+   | vmovss      | X      | M32         | Move single precision                 |
+   | vmovsd      | M64    | X           | Move double precision                 |
+   | vmovsd      | X      | M64         | Move double precision                 |
+   | vmovaps     | X      | X           | Move aligned, packed signle precision |
+   | vmovapd     | X      | X           | Move aligned, packed double precision |
+
+
+   #+CAPTION: VCVTTS
+   | Instruction | Source | Destination | Description                                                   |
+   |-------------+--------+-------------+---------------------------------------------------------------|
+   | vcvttss2si  | X/M32  | R32         | Convert with truncation single precision to integer           |
+   | vcvttsd2si  | X/M64  | R32         | Convert with truncation double precision to integer           |
+   | vcvttss2siq | X/M32  | R64         | Convert with truncation single precision to quad word integer |
+   | vcvttsd2siq | X/M64  | R64         | Convert with truncation double precision to quad word integer |
+
+
+   #+CAPTION: VCVTSI
+   | Instruction | Source 1 | Source 2 | Destination | Description                                   |
+   |-------------+----------+----------+-------------+-----------------------------------------------|
+   | vcvtsi2ss   | M32/R32  | X        | X           | Convert integer to single precision           |
+   | vcvtsi2sd   | M32/R32  | X        | X           | Convert integer to double precision           |
+   | vcvtsi2ssq  | M64/R64  | X        | X           | Convert quad word integer to single precision |
+   | vcvtsi2sdq  | M64/R64  | X        | X           | Convert quad word integer to double precision |
+
+
+   #+CAPTION: operator
+   | Single precision | Double precision | Effect           | Description                           |
+   |------------------+------------------+------------------+---------------------------------------|
+   | vaddss           | vaddsd           | D <- S2 + S1     | Floating-point add                    |
+   | vsubss           | vsubsd           | D <- S2 - S1     | Floating-point subtract               |
+   | vmulss           | vmulsd           | D <- S2 * S1     | Floating-point multiply               |
+   | vdivss           | vdivsd           | D <- S2 / S1     | Floating-point divide                 |
+   | vmaxss           | vmaxsd           | D <- max(S2, S1) | Floating-point maximum                |
+   | vminss           | vminsd           | D <- min(S2, S1) | Floating-point minimum                |
+   | sqrtss           | sqrtsd           | D <- sqrt(S1)    | Floating-point square root            |
+   | vxorps           | vxorpd           | D <- S2 ^ S1     | Floating-point bit level exclusive-or |
+   | vandps           | vandpd           | D <- S2 & S1     | Floating-point bit level and          |
+
+
+   #+CAPTION: vucomi
+   | Instruction     | Effect  | Description              |
+   |-----------------+---------+--------------------------|
+   | vucomiss S1, S2 | S2 - S1 | Compare single precision |
+   | vucomisd S1, S2 | S2 - S1 | Compare double precision |
+
+
+   | S2:S1       | CF | ZF | PF |
+   |-------------+----+----+----|
+   | non-ordered |  1 |  1 |  1 |
+   | S2 < S1     |  1 |  0 |  0 |
+   | S2 = S1     |  0 |  1 |  0 |
+   | S2 > S1     |  0 |  0 |  1 |

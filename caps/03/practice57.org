@@ -1,0 +1,49 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 57
+
+  #+BEGIN_SRC c
+  double funct3(int* ap, double b, long c, float* dp);
+  #+END_SRC
+
+  
+  #+BEGIN_SRC asm
+  ; double funct3(int* ap, double b, long c, float* dp)
+  ; ap in %rdi, b in %xmm0, c in %rsi, dp in %rdx
+  funct3:
+    vmovss     (%rdx), %xmm1           ; dpv -> %xmm1
+    vcvtsi2sd  (%rdi), %xmm2, %xmm2    ; apv -> %xmm2 <double>
+    vucomisd   %xmm2, %xmm0            ; b:apv
+    jbe        .L8                     ; if (b <= apv) goto .L8
+    vcvtsi2ssq %rsi, %xmm0, %xmm0      ; c -> %xmm0 <float>
+    vmulss     %xmm1, %xmm0, %xmm1     ; c * dpv -> %xmm1
+    vunpcklps  %xmm1, %xmm1, %xmm1     ;
+    vcvtps2pd  %xmm1, %xmm0            ; float -> double
+    ret
+  .L8:      
+    vaddss     %xmm1, %xmm1, %xmm1      ; dpv + dpv -> %xmm1
+    vcvtsi2ssq %rsi, %xmm0, %xmm0       ; c -> %xmm0 <float>
+    vaddss     %xmm1, %xmm0, %xmm0      ; c + dpv -> %xmm0 <float>
+    vunpcklps  %xmm0, %xmm0, %xmm0      ;
+    vcvtps2pd  %xmm0, %xmm0             ; float -> double
+    ret
+  #+END_SRC
+
+
+  #+BEGIN_SRC c
+  
+  double funct3(int* ap, double b, long c float* dp)
+  {
+      float d = *dp;
+      double i = (double) *ap;
+
+      double result;
+      if (b <= i) {
+          result = d * c;
+      } else {
+          result = d + d + c;
+      }
+      return result;
+  }
+
+  #+END_SRC

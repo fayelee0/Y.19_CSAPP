@@ -1,0 +1,21 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 55
+
+  #+BEGIN_EXAMPLE
+  .LC3:
+    .long 0
+    .long 1077936128
+  #+END_EXAMPLE
+
+  0           ~  0x00000000
+  1077936128  ~  0x40400000
+
+  0100 0000 0100
+   --- ---- ----
+
+  bin(1000 0000 100) = 1024 + 4
+
+  1.0 * 2^4 = 32.0
+  
+  
