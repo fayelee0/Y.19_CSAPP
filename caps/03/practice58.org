@@ -1,0 +1,31 @@
+#+AUTHOR: Fei Li
+#+EMAIL: wizard@pursuetao.com
+* Practice 58
+
+  #+BEGIN_SRC c
+  long decode2(long x, long y, long z);
+  #+END_SRC
+
+
+  #+BEGIN_SRC asm
+  ; x in %rdi, y in %rsi, z in %rdx
+  decode2:
+    subq   %rdx, %rsi     ; y - z    => %rsi
+    imulq  %rsi, %rdi     ; x * %rsi => %rdi
+    movq   %rsi, %rax     ; %rsi     => %rax
+    salq   $63, %rax      ; %rax >> 63
+    sarq   $63, %rax      ; %rax << 63
+    xorq   %rdi, %rax     ; %rax ^ %rdi
+    ret
+  #+END_SRC
+
+  
+  #+BEGIN_SRC c
+  
+  long decode2(long x, long y, long z)
+  {
+      long t = x * (y - z);
+      return ((y >> 63) << 63) ^ t
+  }
+
+  #+END_SRC
